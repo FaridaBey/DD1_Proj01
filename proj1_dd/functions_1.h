@@ -4,7 +4,7 @@
 //
 //  Created by Farida Sherif on 20/10/2023.
 //
-
+#pragma
 #ifndef functions_1_h
 #define functions_1_h
 #include <iostream>
@@ -37,21 +37,25 @@ bool validation (string& boolean_exp)
             return false;
         }
     }
-    
+
     for(char oper : Val_operands){
         
-        if((boolean_exp[0] == oper && boolean_exp[0] != '(' ) || (boolean_exp[boolean_exp.length()-1] == oper && boolean_exp[boolean_exp.length()-1] != ')'))
+        if(
+           (boolean_exp[0] == oper && boolean_exp[0] != '(' ) || ((boolean_exp[boolean_exp.length()-1] == oper && boolean_exp[boolean_exp.length()-1] != ')') && boolean_exp[boolean_exp.length()-1] != '\''))
         {
-            cout << "function invalid \n"; // if expression starts with an operator other than '(' or ends with an operator other than ')'it is invalid
+            cout << "function invalid \n"; // if expression starts with an operator other than '(' or ends with an operator other than ')' or ' it is invalid
             return false;
+                
         }
-        else if((boolean_exp[0] == '(' && boolean_exp[1] == oper) || (boolean_exp[boolean_exp.length()-1] == ')' && boolean_exp[boolean_exp.length()-2] == oper) ){
-            cout << "function invalid \n"; // if expression starts with '(' or ends with ')' and the second or second to last term is an operator it is invalid
+        else if((boolean_exp[0] == '(' && boolean_exp[1] == oper) || (boolean_exp[boolean_exp.length()-1] == ')' && (boolean_exp[boolean_exp.length()-2] == oper && boolean_exp[boolean_exp.length()-2] != '\'')) || (boolean_exp[boolean_exp.length()-1] == '\'' && (boolean_exp[boolean_exp.length()-2] == oper && boolean_exp[boolean_exp.length()-2] != '\''))){
+            cout << "function invalid \n"; // if expression starts with '(' or ends with [ ')' or '] and the second term is an operator it is invalid or second to last term is operator other than ' it is invalid
             return false;
         }
     }
 
-    
+    /*alphabet only
+     
+     */
    
     cout << boolean_exp << endl;
     return true;

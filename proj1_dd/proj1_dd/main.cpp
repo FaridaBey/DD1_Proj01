@@ -11,7 +11,7 @@ using namespace std;
 
 int main() {
     //testing the function..
-    string input ="test";
+    string input ="a + c+dc')";
     validation (input);
     
     return 0;
