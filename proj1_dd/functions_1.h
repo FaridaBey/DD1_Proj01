@@ -61,5 +61,19 @@ bool validation (string& boolean_exp)
     return true;
 };
 
+
+bool compareByOnes(int &a, int &b)
+{
+    int aOnes = __builtin_popcount(a);
+    int bOnes = __builtin_popcount(b);
+    return aOnes < bOnes;
+}
+
+void sortbyones(vector<int> &x)
+{
+    sort(x.begin(), x.end(), compareByOnes);
+
+}
+
 #endif /* functions_1_h */
 
