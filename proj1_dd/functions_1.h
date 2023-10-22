@@ -16,19 +16,20 @@ using namespace std;
 // function checks whether a given Boolean expression is a valid POS or SOP.
 bool validation (string& boolean_exp)
 {
+      if(empty(boolean_exp)){
+            cout << "no expression\n"; // The expression can't be empty
+            return false;
+        }
+
+         boolean_exp.erase(remove(boolean_exp.begin(), boolean_exp.end(), ' '), boolean_exp.end()); // Remove spaces from the expression
+
     // Define valid operators and count of variables
     vector<char> Val_operands = {'+', '(', ')', '.',' ', '\''} ;
     int var_count = 0;
     
     for (int i=0; i < boolean_exp.length(); i++) {
         boolean_exp[i] = tolower(boolean_exp[i]); // Convert all variables to lowercase
-        
-        if(boolean_exp[i] == ' ')
-            boolean_exp.erase(remove(boolean_exp.begin(), boolean_exp.end(), ' '), boolean_exp.end()); // Remove spaces
-        if(empty(boolean_exp)){
-            cout << "no expression\n"; // The expression can't be empty
-            return false;
-        }
+      
         if(isalpha(boolean_exp[i])){
             var_count ++; // Count the number of variables
         }
