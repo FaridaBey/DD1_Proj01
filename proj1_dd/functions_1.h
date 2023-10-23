@@ -36,7 +36,24 @@ bool balancedParentheses(const string &expression)
     }
     return s.empty();
 }
-//----------------------------------------------------------------------------------------------------
+
+// checks if the expression is in SOP form
+bool isSOP(const string &expression)
+{
+    for(int i=0; i<expression.length(); i++)
+    {
+        if(expression[i]==')'||expression[i]=='(')
+        {
+            return false;
+        }
+
+    }
+    return true;
+}
+
+
+
+//--------------------------------Input Validation-------------------------------------------------
 
 // function checks whether a given Boolean expression is a valid POS or SOP.
 bool validation (string& boolean_exp)
@@ -62,7 +79,8 @@ bool validation (string& boolean_exp)
             cout << "too many variables\n"; // No more than 10 variables
             return false;
         }
-//        ----------------------Alphabet Validation----------------------
+        
+        //Alphabet characters or vallid operators check
         
         if (!(isalpha(boolean_exp[i]) || any_of(Val_operands.begin(), Val_operands.end(), [&boolean_exp, i](char v) {
             return v == boolean_exp[i];
@@ -89,12 +107,8 @@ bool validation (string& boolean_exp)
         return true;
     }
     
-   
-    return true;
 
 };
-
-//----------------------------------------------------------------------------------------------------
 
 //--------------- Helper functions for Print ------------------
 
