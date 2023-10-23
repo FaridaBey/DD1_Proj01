@@ -11,7 +11,8 @@
 #include <set>
 using namespace std;
 
-//-----------------------Helper Functions-----------------------
+//---------------Helper functions for validation------------------
+// checks if there is a bracket that doesnt have a sibling
 bool balancedParentheses(const string &expression)
 {
     stack<char> s;
@@ -35,6 +36,8 @@ bool balancedParentheses(const string &expression)
     }
     return s.empty();
 }
+//----------------------------------------------------------------------------------------------------
+
 // function checks whether a given Boolean expression is a valid POS or SOP.
 bool validation (string& boolean_exp)
 {
@@ -91,20 +94,39 @@ bool validation (string& boolean_exp)
 
 };
 
-//---------------To be used for QM------------------
-bool compareByOnes(int &a, int &b)
-{
-    int aOnes = __builtin_popcount(a);
-    int bOnes = __builtin_popcount(b);
-    return aOnes < bOnes;
+//----------------------------------------------------------------------------------------------------
+
+//--------------- Helper functions for Print ------------------
+
+// Function to extract variable names from the Boolean expression
+set<char> extractVar(const string& boolean_exp) {
+    set<char> variableNames;
+    
+    for (char character : boolean_exp) {
+        if (isalpha(character) && islower(character)) {
+            variableNames.insert(character);
+        }
+    }
+    
+    return variableNames;
 }
 
-void sortbyones(vector<int> &x)
-{
-    sort(x.begin(), x.end(), compareByOnes);
-
+// Function to assign values to variables in the Boolean expression
+void assignValue(string& expression, char variable, bool value) {
+    for (char& character : expression) {
+        if (character == variable) {
+            character = value ? '1' : '0';
+        }
+    }
 }
-//--------------------------------------------------
+
+// Function to evaluate the Boolean expression
+bool EvaluateExpression(const string& boolean_exp) {
+    //    evaluate the expression ??
+    //    return to test the rest
+    return false;
+}
+//----------------------------------------------------------------------------------------------------
 
 // Function to generate canonical SoP expression (minterms)
 string GenerateCanonicalSoP(const vector<vector<bool>>& truthTable, const set<char>& variableNames) {
@@ -171,37 +193,9 @@ string GenerateCanonicalPoS(const vector<vector<bool>>& truthTable, const set<ch
 
     return canonical_PoS;
 }
+//----------------------------------------------------------------------------------------------------
 
-// Function to extract variable names from the Boolean expression
-set<char> extractVar(const string& boolean_exp) {
-    set<char> variableNames;
-    
-    for (char character : boolean_exp) {
-        if (isalpha(character) && islower(character)) {
-            variableNames.insert(character);
-        }
-    }
-    
-    return variableNames;
-}
-
-// Function to assign values to variables in the Boolean expression
-void assignValue(string& expression, char variable, bool value) {
-    for (char& character : expression) {
-        if (character == variable) {
-            character = value ? '1' : '0';
-        }
-    }
-}
-
-// Function to evaluate the Boolean expression
-bool EvaluateExpression(const string& boolean_exp) {
-    //    evaluate the expression ??
-    //    return to test the rest
-    return false;
-}
-
-// Function to print the truth table
+// Function to print the truth table and canonical SoP/PoS
 void PrintTruthTable(const string& boolean_exp) {
     // Extract variable names from the Boolean expression
     set<char> variableNames = extractVar(boolean_exp);
@@ -243,7 +237,7 @@ void PrintTruthTable(const string& boolean_exp) {
         cout << output << endl;
     }
 
-    // Implement the functions GenerateCanonicalSoP and GenerateCanonicalPoS to get canonical expressions
+    // Print the canonical SoP/PoS expressions
     string canonicalSoP = GenerateCanonicalSoP(truthTable, variableNames);
     string canonicalPoS = GenerateCanonicalPoS(truthTable, variableNames);
 
@@ -251,7 +245,22 @@ void PrintTruthTable(const string& boolean_exp) {
     cout << "Canonical PoS: " << canonicalPoS << endl;
 }
 
+//----------------------------------------------------------------------------------------------------
 
+
+//---------------To be used for QM------------------
+bool compareByOnes(int &a, int &b)
+{
+    int aOnes = __builtin_popcount(a);
+    int bOnes = __builtin_popcount(b);
+    return aOnes < bOnes;
+}
+
+void sortbyones(vector<int> &x)
+{
+    sort(x.begin(), x.end(), compareByOnes);
+
+}
 #endif /* functions_1_h */
 
 #pragma clang diagnostic pop
