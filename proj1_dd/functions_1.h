@@ -1,9 +1,3 @@
-//
-//  functions_1.h
-//  proj1_dd
-//
-//  Created by Farida Sherif on 20/10/2023.
-//
 #pragma
 #ifndef functions_1_h
 #define functions_1_h
@@ -11,20 +5,21 @@
 #include <vector>
 #include <cctype>
 #include <algorithm>
+#include <stack>
 using namespace std;
 
 // function checks whether a given Boolean expression is a valid POS or SOP.
 bool validation (string& boolean_exp)
 {
       if(empty(boolean_exp)){
-            cout << "no expression\n"; // The expression can't be empty
+            cout << "Empty Expression\n"; // The expression can't be empty
             return false;
         }
 
          boolean_exp.erase(remove(boolean_exp.begin(), boolean_exp.end(), ' '), boolean_exp.end()); // Remove spaces from the expression
 
     // Define valid operators and count of variables
-    vector<char> Val_operands = {'+', '(', ')', '.',' ', '\''} ;
+    vector<char> Val_operands = {'+', '(', ')', '\''} ;
     int var_count = 0;
     
     for (int i=0; i < boolean_exp.length(); i++) {
@@ -62,7 +57,33 @@ bool validation (string& boolean_exp)
     return true;
 };
 
+//-----------------------Helper Functions-----------------------
+bool balancedParentheses(const string &expression)
+{
+    stack<char> s;
+    for (char c : expression)
+    {
+        if (c == '(')
+        {
+            s.push(c);
+        }
+        else if (c == ')')
+        {
+            if (s.empty())
+            {
+                return false;
+            }
+            else
+            {
+                s.pop();
+            }
+        }
+    }
+    return s.empty();
+}
 
+
+//---------------To be used for QM------------------
 bool compareByOnes(int &a, int &b)
 {
     int aOnes = __builtin_popcount(a);
@@ -75,6 +96,7 @@ void sortbyones(vector<int> &x)
     sort(x.begin(), x.end(), compareByOnes);
 
 }
+//--------------------------------------------------
 
 #endif /* functions_1_h */
 
