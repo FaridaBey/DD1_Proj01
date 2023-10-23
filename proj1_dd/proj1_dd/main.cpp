@@ -11,7 +11,7 @@ int main() {
     cout<< " Example (SOP): ab + bc + ca \n";
     cout<< " Example (POS): (a + b + c)(a + b + c') \n";
     cout<< "\nYour expression: ";
-
+    
 //-----------------------User Input and Validation-----------------------
 
 string expression;

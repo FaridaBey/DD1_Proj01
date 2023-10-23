@@ -8,6 +8,7 @@
 #include <stack>
 using namespace std;
 
+bool balancedParentheses(const string &expression);
 // function checks whether a given Boolean expression is a valid POS or SOP.
 bool validation (string& boolean_exp)
 {
@@ -49,12 +50,21 @@ bool validation (string& boolean_exp)
         }
     }
 
-    /*alphabet only
-     
-     */
+  //----------------------Alphabet Validation----------------------
+    for (int i=0; i < boolean_exp.length(); i++) {
+        if(isalpha(boolean_exp[i]) && !isalpha(boolean_exp[i+1]) && boolean_exp[i+1] != '\'' && boolean_exp[i+1] != ')' && boolean_exp[i+1] != '('){
+            cout << "function invalid \n"; // if expression has a variable followed by a non-variable and non-operator it is invalid
+            return false;
+        }
    
     cout << boolean_exp << endl;
     return true;
+
+    
+    }
+    
+    balancedParentheses(boolean_exp);
+
 };
 
 //-----------------------Helper Functions-----------------------
