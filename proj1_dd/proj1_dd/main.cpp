@@ -1,25 +1,22 @@
-//
-//  main.cpp
-//  proj1_dd
-//
-//  Created by Farida Sherif on 20/10/2023.
-//
-
 #include <iostream>
 #include <vector>
 #include "../functions_1.h"
 using namespace std;
 
 int main() {
-    //testing the function..
-    string input ="a + c+dc')";
-    validation (input);
 
-    vector<int> test = {1,2,3,4,5,6,7,8,9,15,16};
-    sortbyones(test);
-    for(int i=0; i<test.size(); i++){
-        cout << test[i] << endl;
-    }
-    
-    return 0;
+//---------------------------Intro----------------------------------------
+    cout<< "Welcome to the Logic Minimization Tool!\n";
+    cout<< "\nPlease enter a Boolean expression in SOP or POS form: \n";
+    cout<< " Example (SOP): ab + bc + ca \n";
+    cout<< " Example (POS): (a + b + c)(a + b + c') \n";
+    cout<< "\nYour expression: ";
+
+//-----------------------User Input and Validation-----------------------
+
+string expression;
+getline(cin, expression);
+validation(expression);
+
+
 }
