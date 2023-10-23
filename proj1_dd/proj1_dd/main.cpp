@@ -14,9 +14,9 @@ int main() {
     
 //-----------------------User Input and Validation-----------------------
 
-string expression;
-getline(cin, expression);
-validation(expression);
-
-
+    string expression;
+    getline(cin, expression);
+    validation(expression);
+    PrintTruthTable(expression);
+    return 0;
 }
