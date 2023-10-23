@@ -63,7 +63,9 @@ bool validation (string& boolean_exp)
     
     }
     
-    balancedParentheses(boolean_exp);
+   if (balancedParentheses(boolean_exp))
+   return true;
+   return false;
 
 };
 
