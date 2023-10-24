@@ -199,6 +199,8 @@ void assignValue(string& expression, char variable, bool value) {
 }
 
 // Function to evaluate a Boolean expression given values of variables
+// need to handle the precedence
+
 bool EvaluateExpression(const string& expression, const map<char, bool>& variableValues) {
     stack<char> operators;
     stack<bool> operands;
@@ -212,10 +214,37 @@ bool EvaluateExpression(const string& expression, const map<char, bool>& variabl
         else if (token == '0' || token == '1') {
             operands.push(token == '1'); // Push the corresponding boolean value onto the operands stack
         }
-        // Check for logical AND ('&') or logical OR ('|') operators
-        else if (token == '&' || token == '|') {
-            operators.push(token); // Push the operator onto the operators stack
-        }
+        else if (token == '&') {
+                    // Handle logical AND ('&') operator
+                    while (!operators.empty() && (operators.top() == '&')) {
+                        // Evaluate operators with the same precedence ('&')
+                        char op = operators.top();
+                        operators.pop();
+                        bool right = operands.top();
+                        operands.pop();
+                        bool left = operands.top();
+                        operands.pop();
+                        operands.push(left && right);
+                    }
+                    operators.push(token); // Push the current operator onto the operators stack
+                } else if (token == '|') {
+                    // Handle logical OR ('|') operator
+                    while (!operators.empty() && (operators.top() == '&' || operators.top() == '|')) {
+                        // Evaluate operators with the same or higher precedence ('&' or '|')
+                        char op = operators.top();
+                        operators.pop();
+                        bool right = operands.top();
+                        operands.pop();
+                        bool left = operands.top();
+                        operands.pop();
+                        if (op == '&') {
+                            operands.push(left && right);
+                        } else if (op == '|') {
+                            operands.push(left || right);
+                        }
+                    }
+                    operators.push(token); // Push the current operator onto the operators stack
+                }
         // Check for a closing parenthesis (')')
         else if (token == ')') {
             // Evaluate the expression within the parentheses
