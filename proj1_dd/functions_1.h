@@ -103,11 +103,21 @@ bool validation (string& boolean_exp)
         }
     }
     cout << boolean_exp << endl;
-    if (balancedParentheses(boolean_exp)){
-        return true;
+    if (!balancedParentheses(boolean_exp)){
+        return false;
     }
     
 
+    if (!isSOP(boolean_exp)){
+        //check valid POS structure with + in between terms in their brackets
+       for(int i=0; i<boolean_exp.length()-1; i++)
+       {
+            if(isalpha(boolean_exp[i]) && isalpha(boolean_exp[i+1]))
+            return false;
+       }
+      
+    }
+ return true;
 };
 
 //--------------- Helper functions for Print ------------------

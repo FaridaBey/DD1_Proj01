@@ -16,7 +16,25 @@ int main() {
 
     string expression;
     getline(cin, expression);
-    validation(expression);
-    PrintTruthTable(expression);
+   if (validation(expression))
+    {
+        cout << "1 1 1 Valid Expression 1 1 1\n";
+    }
+    else
+    {
+        cout << "0 0 0 Invalid Expression 0 0 0\n";
+    
+    }
+
+    if (isSOP(expression))
+    {
+        cout<< "SOP\n";
+    }
+    else
+    {
+        cout<< "POS\n";
+    }
+    
+   // PrintTruthTable(expression);
     return 0;
 }
