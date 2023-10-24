@@ -15,26 +15,27 @@ int main() {
 //-----------------------User Input and Validation-----------------------
 
     string expression;
-    getline(cin, expression);
-   if (validation(expression))
-    {
-        cout << "1 1 1 Valid Expression 1 1 1\n";
-    }
-    else
-    {
-        cout << "0 0 0 Invalid Expression 0 0 0\n";
+    getline(cin, expression);cout << endl;
     
-    }
+    if (validation(expression))
+     {
+         cout << endl <<"1 1 1 Valid Expression 1 1 1\n";
+     }
+     else
+     {
+         cout << endl << "0 0 0 Invalid Expression 0 0 0\n";
+     
+     }
+     if (isSOP(expression))
+     {
+         cout<< "            SOP\n";
+     }
+     else
+     {
+         cout<< "            POS\n";
+     }
 
-    if (isSOP(expression))
-    {
-        cout<< "SOP\n";
-    }
-    else
-    {
-        cout<< "POS\n";
-    }
-
-   PrintTruthTable(expression);
-    return 0;
-}
+    PrintTruthTable(expression);
+    
+     return 0;
+ }
