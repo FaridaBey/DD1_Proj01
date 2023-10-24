@@ -180,7 +180,7 @@ set<char> extractVar(const string& boolean_exp) {
     set<char> variableNames;
     
     for (char character : boolean_exp) {
-        if (isalpha(character) && islower(character)) {
+        if (isalpha(character)) {
             variableNames.insert(character);
         }
     }

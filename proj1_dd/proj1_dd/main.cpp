@@ -35,7 +35,6 @@ int main() {
         cout<< "POS\n";
     }
 
-   // PrintTruthTable(expression);
+   PrintTruthTable(expression);
     return 0;
 }
-//(apb)+(bc)  
