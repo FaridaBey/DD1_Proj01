@@ -38,16 +38,23 @@ bool balancedParentheses(const string &expression)
 }
 
 // checks if the expression is in SOP form
-bool isSOP(const string &expression)
+bool isSOP(string &expression)
 {
     for(int i=0; i<expression.length(); i++)
     {
-        if(expression[i]==')'||expression[i]=='(')
+        if(expression[i]==')'&&expression[i+1]=='(')
         {
             return false;
         }
+        
 
     }
+    //remove all brackets from expression
+    expression.erase(remove(expression.begin(), expression.end(), '('), expression.end()); // Remove ( from the expression
+    expression.erase(remove(expression.begin(), expression.end(), ')'), expression.end()); // Remove ) from the expression
+
+
+
     return true;
 }
 
@@ -64,21 +71,40 @@ bool validation (string& boolean_exp)
         }
 
          boolean_exp.erase(remove(boolean_exp.begin(), boolean_exp.end(), ' '), boolean_exp.end()); // Remove spaces from the expression
-
+         
 //    Define valid operators and count of variables
     vector<char> Val_operands = {'+', '(', ')', '\''} ;
     int var_count = 0;
     
+    //check if more than 10 variables in expression by making a set of variables and counting the size of the set
+    set<char> variables;
     for (int i=0; i < boolean_exp.length(); i++) {
+        if(isalpha(boolean_exp[i]))
+        {
         boolean_exp[i] = tolower(boolean_exp[i]); // Convert all variables to lowercase
-        
-        if(isalpha(boolean_exp[i])){
-            var_count ++; // Count the number of variables
+       
+        if(variables.find(boolean_exp[i]) == variables.end()) //if not in set, add to set
+        {
+            variables.insert(boolean_exp[i]);
+            var_count++;
         }
-        if(var_count > 10){
+        }
+    }
+
+if(var_count > 10){
             cout << "too many variables\n"; // No more than 10 variables
             return false;
         }
+
+    for (int i=0; i < boolean_exp.length(); i++) {
+        if(boolean_exp[i]=='\''&&boolean_exp[i+1]=='\'')
+        {
+            boolean_exp.erase(i,2);
+            i--;
+        }
+    }
+
+    for (int i=0; i < boolean_exp.length(); i++) {   
         
         //Alphabet characters or vallid operators check
         
@@ -88,22 +114,42 @@ bool validation (string& boolean_exp)
             cout << "function invalid1" << endl; // Check if the character at index 'i' is an alphabetic character (letter) OR if it matches any character in the 'Val_operands' vector
             return false;
         }
+        if(boolean_exp[i] == '+' && boolean_exp[i+1] == '+'){
+            cout << "function invalid2.1" << endl; // Check if there are two '+' operators after each other
+            return false;
+        }
+        else if(boolean_exp[i] == '+' && boolean_exp[i+1] == '\''){
+            cout << "function invalid2.2" << endl; // Check if there is an apostraphe after a '+' operator
+            return false;
+        }
+        else if((boolean_exp[i]=='('||boolean_exp[i]==')')&&boolean_exp[i+1]=='\'')
+        {
+            cout << "function invalid2.4" << endl; // Check if there is an apostraphe after a bracket
+            return false;
+        }
+        else if(boolean_exp[i]=='('&&boolean_exp[i+1]=='+')
+        {
+            cout << "function invalid2.5" << endl; // Check if there is a '+' operator after a bracket
+            return false;
+        }
+       
     }
     
     for(char oper : Val_operands){
         if((boolean_exp[0] == oper && boolean_exp[0] != '(' ) || ((boolean_exp[boolean_exp.length()-1] == oper && boolean_exp[boolean_exp.length()-1] != ')') && boolean_exp[boolean_exp.length()-1] != '\''))
         {
-            cout << "function invalid \n"; // if expression starts with an operator other than '(' or ends with an operator other than ')' or ' it is invalid
+            cout << "function invalid4 \n"; // if expression starts with an operator other than '(' or ends with an operator other than ')' or ' it is invalid
             return false;
                 
         }
         else if((boolean_exp[0] == '(' && boolean_exp[1] == oper) || (boolean_exp[boolean_exp.length()-1] == ')' && (boolean_exp[boolean_exp.length()-2] == oper && boolean_exp[boolean_exp.length()-2] != '\'')) || (boolean_exp[boolean_exp.length()-1] == '\'' && (boolean_exp[boolean_exp.length()-2] == oper && boolean_exp[boolean_exp.length()-2] != '\''))){
-            cout << "function invalid \n"; // if expression starts with '(' or ends with [ ')' or '] and the second term is an operator it is invalid or second to last term is operator other than ' it is invalid
+            cout << "function invalid5 \n"; // if expression starts with '(' or ends with [ ')' or '] and the second term is an operator it is invalid or second to last term is operator other than ' it is invalid
             return false;
         }
     }
     cout << boolean_exp << endl;
     if (!balancedParentheses(boolean_exp)){
+        cout<<"function invalid6\n";
         return false;
     }
     
@@ -113,11 +159,18 @@ bool validation (string& boolean_exp)
        for(int i=0; i<boolean_exp.length()-1; i++)
        {
             if(isalpha(boolean_exp[i]) && isalpha(boolean_exp[i+1]))
-            return false;
+            {
+                cout<<"function invalid7\n";
+                return false;
+                
+            }
+            
        }
       
     }
- return true;
+
+    cout<<"Valid Function: " << boolean_exp <<"\n";
+    return true;
 };
 
 //--------------- Helper functions for Print ------------------
