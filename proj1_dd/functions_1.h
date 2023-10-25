@@ -173,200 +173,76 @@ if(var_count > 10){
     cout<<"Valid Function: " << boolean_exp <<"\n";
     return true;
 };
+//----------------------------------------------------------------------------------------------------
 
-//--------------- Helper functions for Print ------------------
-// Function to extract variable names from the Boolean expression
-set<char> extractVar(const string& boolean_exp) {
-    set<char> variableNames;
+// Function to print the truth table of a transformed Boolean expression . 2
+void printTruthTable(const string &expression) {
+    int numVariables = 0;
+    vector<char> variables;
     
-    for (char character : boolean_exp) {
-        if (isalpha(character)) {
-            variableNames.insert(character);
+    // Extract variables from the expression
+    for (char c : expression) {
+        if (isalpha(c) && find(variables.begin(), variables.end(), c) == variables.end()) {
+            variables.push_back(c);
+            numVariables++;
         }
     }
     
-    return variableNames;
-}
-// Function to assign values to variables in the Boolean expression
-void assignValue(string& expression, char variable, bool value) {
-    for (char& character : expression) {
-        if (character == variable) {
-            character = value ? '1' : '0';
-        }
-    }
-}
-// Function to transform the expression to the standered or, and, not
-string transform(string exp)
-{
-    for(int i = 0; i< exp.length(); i++){
-        if(exp[i] == '+')
-        {
-            exp[i] = '|'; // replace every + with the or sign
-        }
-        else if(exp[i] == '\''){
-            exp.erase(i,1);//remove the '
-            exp.insert(i-1,1,'!'); // add ! infront of the variabel
-            
-        }
-        else if((isalpha(exp[i]) && (isalpha(exp[i + 1]) || exp[i + 1] == '!' || exp[i + 1] == '(')) || (exp[i] == ')' && exp[i+1] == '(')) {
-            exp.insert(i + 1, 1,'&'); // add & in the correct pos
-        }
-    }
-    return exp;
-
-}
-bool isOperator(char c) {
-    return c == '&' || c == '|';
-}
-
-bool evaluateExpression(const string& exp, const map<char, bool>& variableValues) {
-    stack<char> operators;
-    stack<bool> operands;
-    string currentOperand;
-
-    for (char c : exp) {
-        if (isOperator(c)) {
-            while (!operators.empty() && isOperator(operators.top())) {
-                char op = operators.top();
-                operators.pop();
-                bool operand2 = operands.top();
-                operands.pop();
-                bool operand1 = operands.top();
-                operands.pop();
-                if (op == '&') {
-                    operands.push(operand1 && operand2);
-                } else if (op == '|') {
-                    operands.push(operand1 || operand2);
-                }
-            }
-            operators.push(c);
-        } else if (c == ' ') {
-            continue;  // Skip spaces
-        } else if (c == '!') {
-            operators.push(c);  // Handle NOT operator
-        } else if (c == '(') {
-            operators.push(c);
-        } else if (c == ')') {
-            while (!operators.empty() && operators.top() != '(') {
-                char op = operators.top();
-                operators.pop();
-                if (op == '!') {
-                    bool operand = operands.top();
-                    operands.pop();
-                    operands.push(!operand);
-                } else {
-                    bool operand2 = operands.top();
-                    operands.pop();
-                    bool operand1 = operands.top();
-                    operands.pop();
-                    if (op == '&') {
-                        operands.push(operand1 && operand2);
-                    } else if (op == '|') {
-                        operands.push(operand1 || operand2);
-                    }
-                }
-            }
-            operators.pop(); // Remove the '('
-        } else {
-            currentOperand += c;
-            if (currentOperand == "0") {
-                operands.push(false);
-                currentOperand.clear();
-            } else if (currentOperand == "1") {
-                operands.push(true);
-                currentOperand.clear();
-            } else if (isalpha(c)) {
-                char var = c;
-                bool varValue = variableValues.at(var);
-                operands.push(varValue);
-            }
-        }
-    }
-
-    while (!operators.empty()) {
-        char op = operators.top();
-        operators.pop();
-        if (op == '!') {
-            bool operand = operands.top();
-            operands.pop();
-            operands.push(!operand);
-        } else {
-            bool operand2 = operands.top();
-            operands.pop();
-            bool operand1 = operands.top();
-            operands.pop();
-            if (op == '&') {
-                operands.push(operand1 && operand2);
-            } else if (op == '|') {
-                operands.push(operand1 || operand2);
-            }
-        }
-    }
-
-    return operands.top();
-}
+    int numRows = pow(2, numVariables);
     
-    //----------------------------------------------------------------------------------------------------
-    // funtion for canonical sop
-
-// Function to print the truth table and canonical SoP/PoS
-void PrintTruthTable(const string& boolean_exp) {
-    string exp = transform(boolean_exp);
-    cout << exp << endl;
-    set<char> variableNames;
-
-    // Extract variable names from the expression
-    for (char c : exp) {
-        if (isalpha(c)) {
-            variableNames.insert(c);
-        }
+    // Print the header row with variable names
+    for (char var : variables) {
+        cout << var << " ";
     }
-
-    int numberOfVar = variableNames.size();
-    string truthTableHeader = "";
-
-    for (char variable : variableNames) {
-        truthTableHeader += variable;
-        truthTableHeader += " | ";
+    cout << "| " << expression << endl;
+    
+    // Print a separator line
+    for (int i = 0; i < numVariables; i++) {
+        cout << "- ";
     }
-    truthTableHeader += "Output";
-    cout << truthTableHeader << endl;
-
-    int rows = 1 << numberOfVar;
-    vector<vector<bool>> truthTable(rows, vector<bool>(numberOfVar, false));
-
-    for (int i = 0; i < rows; ++i) {
-        map<char, bool> variableValues;
-
-        for (int j = 0; j < numberOfVar; ++j) {
-            bool value = (i >> j) & 1;
-            char variable = *next(variableNames.begin(), j);
-            variableValues[variable] = value;
-            truthTable[i][j] = value;
-        }
-
-        // Evaluate the current expression
-        bool output;
-        output = evaluateExpression(exp, variableValues);
-
-        // Print the values in the row
-        for (int j = 0; j < numberOfVar; ++j) {
-            cout << truthTable[i][j] << " | ";
-        }
-        // Print the output
-        cout << output << endl;
+    cout << "| ";
+    for (int i = 0; i < expression.length(); i++) {
+        cout << "-";
     }
-
-    // Extract minterms and binary representations
-    // Implement this part as described in your original code.
-
-    // Print the canonical SoP/PoS expressions
-    // You can uncomment this part once you implement it.
-    // string canonicalSoP = GenerateCanonicalSoP(truthTable, variableNames);
-    // string canonicalPoS = GenerateCanonicalPoS(truthTable, variableNames);
-
-    // cout << "Canonical SoP: " << canonicalSoP << endl;
-    // cout << "Canonical PoS: " << canonicalPoS << endl;
+    cout << endl;
+    
+    // Generate and print the truth table
+    for (int row = 0; row < numRows; row++) {
+        vector<int> variableValues;
+        int temp = row;
+        for (int i = 0; i < numVariables; i++) {
+            variableValues.push_back(temp % 2);
+            temp /= 2;
+        }
+        
+        for (int i = numVariables - 1; i >= 0; i--) {
+            cout << variableValues[i] << " ";
+        }
+        cout << "| ";
+        
+        // Evaluate the expression for the current variable values
+        string evaluationExpression = expression;
+        for (int i = 0; i < numVariables; i++) {
+            char var = variables[i];
+            char varValue = (variableValues[i] == 0) ? '0' : '1';
+            for (size_t pos = evaluationExpression.find(var); pos != string::npos; pos = evaluationExpression.find(var, pos)) {
+                evaluationExpression.replace(pos, 1, 1, varValue);
+            }
+        }
+        cout << evaluationExpression << endl;
+    }
+    
+    
+    //    // Extract minterms and binary representations
+    //    // Implement this part as described in your original code.
+    //
+    //    // Print the canonical SoP/PoS expressions
+    //    // You can uncomment this part once you implement it.
+    //    // string canonicalSoP = GenerateCanonicalSoP(truthTable, variableNames);
+    //    // string canonicalPoS = GenerateCanonicalPoS(truthTable, variableNames);
+    //
+    //    // cout << "Canonical SoP: " << canonicalSoP << endl;
+    //    // cout << "Canonical PoS: " << canonicalPoS << endl;
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -388,3 +264,9 @@ void sortbyones(vector<int> &x)
 
 #pragma clang diagnostic pop
 
+/*
+ bool evaluate (string exp, map variable)
+ {
+    
+ }
+ */

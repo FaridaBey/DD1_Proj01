@@ -4,43 +4,44 @@
 using namespace std;
 
 int main() {
-
-//---------------------------Intro----------------------------------------
+    
+    //---------------------------Intro----------------------------------------
     cout<< "Welcome to the Logic Minimization Tool!\n";
     cout<< "\nPlease enter a Boolean expression in SOP or POS form: \n";
     cout<< " Example (SOP): ab + bc + ca \n";
     cout<< " Example (POS): (a + b + c)(a + b + c') \n";
     cout<< "\nYour expression: ";
     
-//-----------------------User Input and Validation-----------------------
-
+    //-----------------------User Input and Validation-----------------------
+    
     string expression;
     getline(cin, expression);cout << endl;
     
     if (validation(expression))
-     {
-         cout << endl <<"1 1 1 Valid Expression 1 1 1\n";
-     }
-     else
-     {
-         cout << endl << "0 0 0 Invalid Expression 0 0 0\n";
-     
-     }
-     if (isSOP(expression))
-     {
-         cout<< "            SOP\n";
-     }
-     else
-     {
-         cout<< "            POS\n";
-     }
-
+    {
+        cout << endl <<"1 1 1 Valid Expression 1 1 1\n";
+    }
+    else
+    {
+        cout << endl << "0 0 0 Invalid Expression 0 0 0\n";
+        
+    }
+    if (isSOP(expression))
+    {
+        cout<< "            SOP\n";
+    }
+    else
+    {
+        cout<< "            POS\n";
+    }
+    //cout << transform(expression);
+    
     if (validation(expression)){
-        PrintTruthTable(expression);
+        
+        printTruthTable(expression);
     }
     else{
         cout << "cant process the truth table" << endl;
     }
-        return 0;
-    }
+}
 
