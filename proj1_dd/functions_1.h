@@ -177,7 +177,7 @@ if(var_count > 10){
 //--------------- Helper functions for Print ------------------
 
 // Function to transform the expression to the standered or, and, not
-string transform(string exp)
+string transform(string exp) 
 {
     for(int i = 0; i< exp.length(); i++){
         if(exp[i] == '+')
@@ -189,7 +189,7 @@ string transform(string exp)
             exp.insert(i-1,1,'!'); // add ! infront of the variabel
             
         }
-        else if((isalpha(exp[i]) && (isalpha(exp[i + 1]) || exp[i + 1] == '!' || exp[i + 1] == '(')) || (exp[i] == ')' && exp[i+1] == '(')) {
+        else if((isalpha(exp[i]) && (isalpha(exp[i + 1]) || exp[i + 1] == '\'' || exp[i + 1] == '(')) || (exp[i] == ')' && exp[i+1] == '(')) {
             exp.insert(i + 1, 1,'&'); // add & in the correct pos
         }
     }
@@ -254,6 +254,7 @@ void printTruthTable(const string &expression) {
                 evaluationExpression.replace(pos, 1, 1, varValue);
             }
         }
+        // there is a bug the values get switched
         cout << evaluationExpression << endl;
     }
     

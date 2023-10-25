@@ -37,8 +37,8 @@ int main() {
     //cout << transform(expression);
     
     if (validation(expression)){
-        
-        printTruthTable(expression);
+        string bool_exp = transform(expression);
+        printTruthTable(bool_exp);
     }
     else{
         cout << "cant process the truth table" << endl;
