@@ -175,7 +175,6 @@ if(var_count > 10){
 };
 
 //--------------- Helper functions for Print ------------------
-
 // Function to extract variable names from the Boolean expression
 set<char> extractVar(const string& boolean_exp) {
     set<char> variableNames;
@@ -188,7 +187,6 @@ set<char> extractVar(const string& boolean_exp) {
     
     return variableNames;
 }
-
 // Function to assign values to variables in the Boolean expression
 void assignValue(string& expression, char variable, bool value) {
     for (char& character : expression) {
@@ -197,186 +195,7 @@ void assignValue(string& expression, char variable, bool value) {
         }
     }
 }
-
-// Function to evaluate a Boolean expression given values of variables
-// need to handle the precedence
-
-bool EvaluateExpression(const string& expression, const map<char, bool>& variableValues) {
-    stack<char> operators;
-    stack<bool> operands;
-
-    for (char token : expression) {
-        // Check if the token is a variable (e.g., 'A', 'B', etc.)
-        if (isalpha(token)) {
-            operands.push(variableValues.at(token)); // Push the value of the variable onto the operands stack
-        }
-        // Check if the token is a '0' or '1'
-        else if (token == '0' || token == '1') {
-            operands.push(token == '1'); // Push the corresponding boolean value onto the operands stack
-        }
-        else if (token == '&') {
-                    // Handle logical AND ('&') operator
-                    while (!operators.empty() && (operators.top() == '&')) {
-                        // Evaluate operators with the same precedence ('&')
-                        char op = operators.top();
-                        operators.pop();
-                        bool right = operands.top();
-                        operands.pop();
-                        bool left = operands.top();
-                        operands.pop();
-                        operands.push(left && right);
-                    }
-                    operators.push(token); // Push the current operator onto the operators stack
-                } else if (token == '|') {
-                    // Handle logical OR ('|') operator
-                    while (!operators.empty() && (operators.top() == '&' || operators.top() == '|')) {
-                        // Evaluate operators with the same or higher precedence ('&' or '|')
-                        char op = operators.top();
-                        operators.pop();
-                        bool right = operands.top();
-                        operands.pop();
-                        bool left = operands.top();
-                        operands.pop();
-                        if (op == '&') {
-                            operands.push(left && right);
-                        } else if (op == '|') {
-                            operands.push(left || right);
-                        }
-                    }
-                    operators.push(token); // Push the current operator onto the operators stack
-                }
-        // Check for a closing parenthesis (')')
-        else if (token == ')') {
-            // Evaluate the expression within the parentheses
-            while (!operators.empty() && operators.top() != '(') {
-                char op = operators.top();
-                operators.pop();
-                bool right = operands.top();
-                operands.pop();
-                bool left = operands.top();
-                operands.pop();
-
-                // Apply the operator to the operands and push the result
-                if (op == '&') {
-                    operands.push(left && right);
-                } else if (op == '|') {
-                    operands.push(left || right);
-                }
-            }
-            operators.pop();  // Pop the opening parenthesis
-        }
-        // Check for an opening parenthesis ('(')
-        else if (token == '(') {
-            // Push the opening parenthesis onto the operators stack
-            operators.push(token);
-        }
-        // Check for the logical NOT ('!') operator
-        else if (token == '!') {
-            // Push the NOT operator onto the operators stack
-            operators.push(token);
-        }
-    }
-
-    // Evaluate any remaining operators and operands
-    while (!operators.empty()) {
-        char op = operators.top();
-        operators.pop();
-
-        if (op == '!') {
-            bool val = operands.top();
-            operands.pop();
-            // Apply the logical NOT operator and push the result
-            operands.push(!val);
-        } else {
-            bool right = operands.top();
-            operands.pop();
-            bool left = operands.top();
-            operands.pop();
-
-            // Apply the operator to the operands and push the result
-            if (op == '&') {
-                operands.push(left && right);
-            } else if (op == '|') {
-                operands.push(left || right);
-            }
-        }
-    }
-
-    // The result of the expression is the top element on the operands stack
-    return operands.top();
-}
-
-//----------------------------------------------------------------------------------------------------
-/*
-// Function to generate canonical SoP expression (minterms)
-string GenerateCanonicalSoP(const vector<vector<bool>>& truthTable, const set<char>& variableNames) {
-    string canonical_SoP = "";
-
-    int numRows = truthTable.size();
-    int numVariables = variableNames.size();
-
-    for (int i = 0; i < numRows; ++i) {
-        bool output = truthTable[i][numVariables];
-        if (output) {
-            string minterm = "(";
-            for (int j = 0; j < numVariables; ++j) {
-                char variable = *next(variableNames.begin(), j);
-                if (truthTable[i][j]) {
-                    minterm += variable;  // Include the variable if it's true (minterm)
-                } else {
-                    minterm += "!" + string(1, variable);  // Include the negated variable if it's false (!minterm)
-                }
-                if (j < numVariables - 1) {
-                    minterm += " * ";  // Separate variables with "AND" in the minterm
-                }
-            }
-            minterm += ")";
-            canonical_SoP += minterm;  // Add the minterm to the SoP expression
-            if (i < numRows - 1) {
-                canonical_SoP += " + ";  // Separate minterms with "OR" in the SoP expression
-            }
-        }
-    }
-
-    return canonical_SoP;
-}
-
-// Function to generate canonical PoS expression (maxterms)
-string GenerateCanonicalPoS(const vector<vector<bool>>& truthTable, const set<char>& variableNames) {
-    string canonical_PoS = "";
-
-    int numRows = truthTable.size();
-    int numVariables = variableNames.size();
-
-    for (int i = 0; i < numRows; ++i) {
-        bool output = truthTable[i][numVariables];
-        if (!output) {
-            string maxterm = "(";
-            for (int j = 0; j < numVariables; ++j) {
-                char variable = *next(variableNames.begin(), j);
-                if (!truthTable[i][j]) {
-                    maxterm += variable;  // Include the variable if it's false (maxterm)
-                } else {
-                    maxterm += "!" + string(1, variable);  // Include the negated variable if it's true (!maxterm)
-                }
-                if (j < numVariables - 1) {
-                    maxterm += " + ";  // Separate variables with "OR" in the maxterm
-                }
-            }
-            maxterm += ")";
-            canonical_PoS += maxterm;  // Add the maxterm to the PoS expression
-            if (i < numRows - 1) {
-                canonical_PoS += " * ";  // Separate maxterms with "AND" in the PoS expression
-            }
-        }
-    }
-
-    return canonical_PoS;
-}
- */
-//--------------------------------------------------------------------
-
-//function to transform the expression to the standered or, and, not
+// Function to transform the expression to the standered or, and, not
 string transform(string exp)
 {
     for(int i = 0; i< exp.length(); i++){
@@ -394,16 +213,115 @@ string transform(string exp)
         }
     }
     return exp;
+
+}
+bool isOperator(char c) {
+    return c == '&' || c == '|';
 }
 
-//----------------------------------------------------------------------------------------------------
+bool evaluateExpression(const string& exp, const map<char, bool>& variableValues) {
+    stack<char> operators;
+    stack<bool> operands;
+    string currentOperand;
+
+    for (char c : exp) {
+        if (isOperator(c)) {
+            while (!operators.empty() && isOperator(operators.top())) {
+                char op = operators.top();
+                operators.pop();
+                bool operand2 = operands.top();
+                operands.pop();
+                bool operand1 = operands.top();
+                operands.pop();
+                if (op == '&') {
+                    operands.push(operand1 && operand2);
+                } else if (op == '|') {
+                    operands.push(operand1 || operand2);
+                }
+            }
+            operators.push(c);
+        } else if (c == ' ') {
+            continue;  // Skip spaces
+        } else if (c == '!') {
+            operators.push(c);  // Handle NOT operator
+        } else if (c == '(') {
+            operators.push(c);
+        } else if (c == ')') {
+            while (!operators.empty() && operators.top() != '(') {
+                char op = operators.top();
+                operators.pop();
+                if (op == '!') {
+                    bool operand = operands.top();
+                    operands.pop();
+                    operands.push(!operand);
+                } else {
+                    bool operand2 = operands.top();
+                    operands.pop();
+                    bool operand1 = operands.top();
+                    operands.pop();
+                    if (op == '&') {
+                        operands.push(operand1 && operand2);
+                    } else if (op == '|') {
+                        operands.push(operand1 || operand2);
+                    }
+                }
+            }
+            operators.pop(); // Remove the '('
+        } else {
+            currentOperand += c;
+            if (currentOperand == "0") {
+                operands.push(false);
+                currentOperand.clear();
+            } else if (currentOperand == "1") {
+                operands.push(true);
+                currentOperand.clear();
+            } else if (isalpha(c)) {
+                char var = c;
+                bool varValue = variableValues.at(var);
+                operands.push(varValue);
+            }
+        }
+    }
+
+    while (!operators.empty()) {
+        char op = operators.top();
+        operators.pop();
+        if (op == '!') {
+            bool operand = operands.top();
+            operands.pop();
+            operands.push(!operand);
+        } else {
+            bool operand2 = operands.top();
+            operands.pop();
+            bool operand1 = operands.top();
+            operands.pop();
+            if (op == '&') {
+                operands.push(operand1 && operand2);
+            } else if (op == '|') {
+                operands.push(operand1 || operand2);
+            }
+        }
+    }
+
+    return operands.top();
+}
+    
+    //----------------------------------------------------------------------------------------------------
+    // funtion for canonical sop
 
 // Function to print the truth table and canonical SoP/PoS
 void PrintTruthTable(const string& boolean_exp) {
- 
     string exp = transform(boolean_exp);
     cout << exp << endl;
-    set<char> variableNames = extractVar(exp);
+    set<char> variableNames;
+
+    // Extract variable names from the expression
+    for (char c : exp) {
+        if (isalpha(c)) {
+            variableNames.insert(c);
+        }
+    }
+
     int numberOfVar = variableNames.size();
     string truthTableHeader = "";
 
@@ -418,37 +336,40 @@ void PrintTruthTable(const string& boolean_exp) {
     vector<vector<bool>> truthTable(rows, vector<bool>(numberOfVar, false));
 
     for (int i = 0; i < rows; ++i) {
-        string current_exp = exp;
         map<char, bool> variableValues;
+
         for (int j = 0; j < numberOfVar; ++j) {
             bool value = (i >> j) & 1;
             char variable = *next(variableNames.begin(), j);
-            assignValue(current_exp, variable, value);
             variableValues[variable] = value;
             truthTable[i][j] = value;
         }
 
-        // Evaluate the current expression and print the values in the row
-        bool output = EvaluateExpression(current_exp, variableValues);
+        // Evaluate the current expression
+        bool output;
+        output = evaluateExpression(exp, variableValues);
+
+        // Print the values in the row
         for (int j = 0; j < numberOfVar; ++j) {
             cout << truthTable[i][j] << " | ";
         }
+        // Print the output
         cout << output << endl;
     }
-    //extract the minterms and binary representation for following functions
-       //   for minterms--> iterate through the rows of the truth table and keep track of the row number for each row where the output is 1 (indicating a minterm), row num is minterm.
-       //    For binary representations--> take the values from the corresponding row in the truth table.
+
+    // Extract minterms and binary representations
+    // Implement this part as described in your original code.
 
     // Print the canonical SoP/PoS expressions
-//    string canonicalSoP = GenerateCanonicalSoP(truthTable, variableNames);
-//    string canonicalPoS = GenerateCanonicalPoS(truthTable, variableNames);
+    // You can uncomment this part once you implement it.
+    // string canonicalSoP = GenerateCanonicalSoP(truthTable, variableNames);
+    // string canonicalPoS = GenerateCanonicalPoS(truthTable, variableNames);
 
-//    cout << "Canonical SoP: " << canonicalSoP << endl;
-//    cout << "Canonical PoS: " << canonicalPoS << endl;
+    // cout << "Canonical SoP: " << canonicalSoP << endl;
+    // cout << "Canonical PoS: " << canonicalPoS << endl;
 }
 
 //----------------------------------------------------------------------------------------------------
-
 
 //---------------To be used for QM------------------
 bool compareByOnes(int &a, int &b)
@@ -456,13 +377,13 @@ bool compareByOnes(int &a, int &b)
     int aOnes = __builtin_popcount(a);
     int bOnes = __builtin_popcount(b);
     return aOnes < bOnes;
-}
+};
 
 void sortbyones(vector<int> &x)
 {
     sort(x.begin(), x.end(), compareByOnes);
 
-}
+};
 #endif /* functions_1_h */
 
 #pragma clang diagnostic pop

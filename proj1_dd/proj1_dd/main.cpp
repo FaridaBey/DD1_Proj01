@@ -35,7 +35,12 @@ int main() {
          cout<< "            POS\n";
      }
 
-    PrintTruthTable(expression);
-    
-     return 0;
- }
+    if (validation(expression)){
+        PrintTruthTable(expression);
+    }
+    else{
+        cout << "cant process the truth table" << endl;
+    }
+        return 0;
+    }
+
