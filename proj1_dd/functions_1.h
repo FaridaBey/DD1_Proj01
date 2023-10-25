@@ -174,6 +174,31 @@ if(var_count > 10){
     return true;
 };
 //----------------------------------------------------------------------------------------------------
+//--------------- Helper functions for Print ------------------
+
+// Function to transform the expression to the standered or, and, not
+string transform(string exp)
+{
+    for(int i = 0; i< exp.length(); i++){
+        if(exp[i] == '+')
+        {
+            exp[i] = '|'; // replace every + with the or sign
+        }
+        else if(exp[i] == '\''){
+            exp.erase(i,1);//remove the '
+            exp.insert(i-1,1,'!'); // add ! infront of the variabel
+            
+        }
+        else if((isalpha(exp[i]) && (isalpha(exp[i + 1]) || exp[i + 1] == '!' || exp[i + 1] == '(')) || (exp[i] == ')' && exp[i+1] == '(')) {
+            exp.insert(i + 1, 1,'&'); // add & in the correct pos
+        }
+    }
+    return exp;
+
+}
+/* 
+    implement a function to evaluate the bool of the truth table output
+ */
 
 // Function to print the truth table of a transformed Boolean expression . 2
 void printTruthTable(const string &expression) {
