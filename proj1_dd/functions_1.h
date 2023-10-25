@@ -177,7 +177,7 @@ if(var_count > 10){
 //--------------- Helper functions for Print ------------------
 
 // Function to transform the expression to the standered or, and, not
-string transform(string exp) 
+string transform(string exp) // needs more check for bugs !!!!
 {
     for(int i = 0; i< exp.length(); i++){
         if(exp[i] == '+')
@@ -186,13 +186,21 @@ string transform(string exp)
         }
         else if(exp[i] == '\''){
             exp.erase(i,1);//remove the '
-            exp.insert(i-1,1,'!'); // add ! infront of the variabel
+            exp.insert(i-2,1,'!'); // add ! infront of the variabel
             
         }
         else if((isalpha(exp[i]) && (isalpha(exp[i + 1]) || exp[i + 1] == '\'' || exp[i + 1] == '(')) || (exp[i] == ')' && exp[i+1] == '(')) {
             exp.insert(i + 1, 1,'&'); // add & in the correct pos
         }
     }
+    for(int i = 0; i< exp.length(); i++){
+        if(exp[i] == '&' && exp[i+1] == '|')
+        {
+            exp.erase(i,1);//remove the &
+        }
+    }
+            
+
     return exp;
 
 }
@@ -200,11 +208,10 @@ string transform(string exp)
     implement a function to evaluate the bool of the truth table output
  */
 
-// Function to print the truth table of a transformed Boolean expression . 2
 void printTruthTable(const string &expression) {
     int numVariables = 0;
     vector<char> variables;
-    
+
     // Extract variables from the expression
     for (char c : expression) {
         if (isalpha(c) && find(variables.begin(), variables.end(), c) == variables.end()) {
@@ -212,15 +219,15 @@ void printTruthTable(const string &expression) {
             numVariables++;
         }
     }
-    
+
     int numRows = pow(2, numVariables);
-    
+
     // Print the header row with variable names
     for (char var : variables) {
         cout << var << " ";
     }
     cout << "| " << expression << endl;
-    
+
     // Print a separator line
     for (int i = 0; i < numVariables; i++) {
         cout << "- ";
@@ -230,7 +237,7 @@ void printTruthTable(const string &expression) {
         cout << "-";
     }
     cout << endl;
-    
+
     // Generate and print the truth table
     for (int row = 0; row < numRows; row++) {
         vector<int> variableValues;
@@ -239,12 +246,12 @@ void printTruthTable(const string &expression) {
             variableValues.push_back(temp % 2);
             temp /= 2;
         }
-        
-        for (int i = numVariables - 1; i >= 0; i--) {
+
+        for (int i = 0; i < numVariables; i++) {
             cout << variableValues[i] << " ";
         }
         cout << "| ";
-        
+
         // Evaluate the expression for the current variable values
         string evaluationExpression = expression;
         for (int i = 0; i < numVariables; i++) {
@@ -254,10 +261,9 @@ void printTruthTable(const string &expression) {
                 evaluationExpression.replace(pos, 1, 1, varValue);
             }
         }
-        // there is a bug the values get switched
         cout << evaluationExpression << endl;
     }
-    
+
     
     //    // Extract minterms and binary representations
     //    // Implement this part as described in your original code.
