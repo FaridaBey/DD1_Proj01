@@ -37,11 +37,11 @@ int main() {
     
     if (validation(expression)){
         string bool_exp = transform(expression);
-        cout <<" \t" << bool_exp<< "\n";
+        cout <<" \t" << bool_exp<< "\n"; // for testing the transform function
         printTruthTable(bool_exp);
     }
     else{
-        cout << "cant process the truth table" << endl;
+        cout << "cant process the truth table ... Expression INVALID" << endl;
     }
 }
 

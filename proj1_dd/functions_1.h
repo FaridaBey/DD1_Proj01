@@ -174,7 +174,6 @@ if(var_count > 10){
     cout<<"Valid Function: " << boolean_exp <<"\n";
     return true;
 };
-//----------------------------------------------------------------------------------------------------
 //--------------- Helper functions for Print ------------------
 
 // Function to transform the expression to the standered or, and, not
@@ -199,13 +198,18 @@ string transform(string exp) // needs more check for bugs !!!!
         {
             exp.erase(i,1);//remove the &
         }
+        else if(exp[i] == '&' && i == exp.length()-1 )
+        {
+            exp.erase(i,1);//remove the &
+        }
+        else if(exp[i] == '&' && exp[i+1] == ')')
+        {
+            exp.erase(i,1);//remove the &
+        }
     }
     return exp;
 
 }
-/* 
-    implement a function to evaluate the bool of the truth table output
- */
 // Function to check the operators
 bool isOperator(char c) {
     return c == '&' || c == '|' || c == '!';
@@ -304,6 +308,12 @@ bool convert_exp(const string& expression) {
 }
 
 
+//------------------------------TRUTH TABLE & Canonical SoP/PoS-------------------------------------
+
+/*
+    the output needs more organization --> variables output in alphabetical order
+ */
+
 // funtcion to print the truth table and canonical PoS/SoP
 void printTruthTable(const string &expression) {
     int numVariables = 0;
@@ -380,6 +390,8 @@ void printTruthTable(const string &expression) {
 
 //----------------------------------------------------------------------------------------------------
 
+
+
 //---------------To be used for QM------------------
 bool compareByOnes(int &a, int &b)
 {
@@ -397,9 +409,3 @@ void sortbyones(vector<int> &x)
 
 #pragma clang diagnostic pop
 
-/*
- bool evaluate (string exp, map variable)
- {
-    
- }
- */
