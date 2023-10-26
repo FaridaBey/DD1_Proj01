@@ -10,6 +10,7 @@
 #include <stack>
 #include <set>
 #include <map>
+#include <cmath>
 using namespace std;
 
 //---------------Helper functions for validation------------------
@@ -199,15 +200,111 @@ string transform(string exp) // needs more check for bugs !!!!
             exp.erase(i,1);//remove the &
         }
     }
-            
-
     return exp;
 
 }
 /* 
     implement a function to evaluate the bool of the truth table output
  */
+// Function to check the operators
+bool isOperator(char c) {
+    return c == '&' || c == '|' || c == '!';
+}
+// Function that hepls in handeling the precedence
+int getPrecedence(char c) {
+    if (c == '!') return 3;
+    if (c == '&') return 2;
+    if (c == '|') return 1;
+    return 0;
+}
+// Function to convert the expression output to binary
+bool convert_exp(const string& expression) {
+    stack<bool> operandStack;
+    stack<char> operatorStack;
+    unordered_map<char, bool> variables;
 
+    for (char c : expression) {
+        if (c == '0' || c == '1') {
+            operandStack.push(c == '1');
+        } else if (c == '!' || c == '&' || c == '|') {
+            while (!operatorStack.empty() &&
+                   getPrecedence(operatorStack.top()) >= getPrecedence(c)) {
+                char op = operatorStack.top();
+                operatorStack.pop();
+
+                if (op == '!') {
+                    bool operand = operandStack.top();
+                    operandStack.pop();
+                    operandStack.push(!operand);
+                } else {
+                    bool operand2 = operandStack.top();
+                    operandStack.pop();
+                    bool operand1 = operandStack.top();
+                    operandStack.pop();
+
+                    if (op == '&') {
+                        operandStack.push(operand1 && operand2);
+                    } else if (op == '|') {
+                        operandStack.push(operand1 || operand2);
+                    }
+                }
+            }
+            operatorStack.push(c);
+        } else if (c == '(') {
+            operatorStack.push(c);
+        } else if (c == ')') {
+            while (!operatorStack.empty() && operatorStack.top() != '(') {
+                char op = operatorStack.top();
+                operatorStack.pop();
+
+                if (op == '!') {
+                    bool operand = operandStack.top();
+                    operandStack.pop();
+                    operandStack.push(!operand);
+                } else {
+                    bool operand2 = operandStack.top();
+                    operandStack.pop();
+                    bool operand1 = operandStack.top();
+                    operandStack.pop();
+
+                    if (op == '&') {
+                        operandStack.push(operand1 && operand2);
+                    } else if (op == '|') {
+                        operandStack.push(operand1 || operand2);
+                    }
+                }
+            }
+            operatorStack.pop(); // Remove the '('
+        }
+    }
+
+    while (!operatorStack.empty()) {
+        char op = operatorStack.top();
+        operatorStack.pop();
+
+        if (op == '!') {
+            bool operand = operandStack.top();
+            operandStack.pop();
+            operandStack.push(!operand);
+        } else {
+            bool operand2 = operandStack.top();
+            operandStack.pop();
+            bool operand1 = operandStack.top();
+            operandStack.pop();
+
+            if (op == '&') {
+                operandStack.push(operand1 && operand2);
+            } else if (op == '|') {
+                operandStack.push(operand1 || operand2);
+            }
+        }
+    }
+
+    return operandStack.top();
+}
+
+
+// funtcion to print the truth table and canonical PoS/SoP
 void printTruthTable(const string &expression) {
     int numVariables = 0;
     vector<char> variables;
@@ -254,14 +351,18 @@ void printTruthTable(const string &expression) {
 
         // Evaluate the expression for the current variable values
         string evaluationExpression = expression;
+        bool  result = false;
         for (int i = 0; i < numVariables; i++) {
             char var = variables[i];
             char varValue = (variableValues[i] == 0) ? '0' : '1';
             for (size_t pos = evaluationExpression.find(var); pos != string::npos; pos = evaluationExpression.find(var, pos)) {
                 evaluationExpression.replace(pos, 1, 1, varValue);
+//                result = convert_exp(evaluationExpression);
             }
         }
-        cout << evaluationExpression << endl;
+        result = convert_exp(evaluationExpression);
+        cout << result << endl;
+//        << evaluationExpression <<"        " 
     }
 
     

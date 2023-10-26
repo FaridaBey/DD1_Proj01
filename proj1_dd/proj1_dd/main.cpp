@@ -34,10 +34,10 @@ int main() {
     {
         cout<< "            POS\n";
     }
-    //cout << transform(expression);
     
     if (validation(expression)){
         string bool_exp = transform(expression);
+        cout <<" \t" << bool_exp<< "\n";
         printTruthTable(bool_exp);
     }
     else{
