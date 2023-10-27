@@ -5,46 +5,51 @@
 #include "../PrimeImplicants.h"
 using namespace std;
 
-int main() {
-    
+int main()
+{
+
     //---------------------------Intro----------------------------------------
-    cout<< "Welcome to the Logic Minimization Tool!\n";
-    cout<< "\nPlease enter a Boolean expression in SOP or POS form: \n";
-    cout<< " Example (SOP): ab + bc + ca \n";
-    cout<< " Example (POS): (a + b + c)(a + b + c') \n";
-    cout<< "\nYour expression: ";
-    
+    cout << "🅀 🅄 🄸 🄽 🄴  🄼 🄲 🄲 🄻 🅄 🅂 🄺 🄴 🅈\n";
+    cout << "Welcome to the Logic Minimization Tool!\n";
+    cout << "\nPlease enter a Boolean expression in SOP or POS form: \n";
+    cout << " Example (SOP): ab + bc + ca \n";
+    cout << " Example (POS): (a + b + c)(a + b + c') \n";
+    cout << "\nYour expression: ";
+
     //-----------------------User Input and Validation-----------------------
-    
+
     string expression;
     getline(cin, expression);
     cout << endl;
-    
+
     if (validation(expression))
     {
-        cout << endl <<"1 1 1 Valid Expression 1 1 1\n";
+        cout << endl
+             << "Valid Expression\n";
     }
     else
     {
-        cout << endl << "0 0 0 Invalid Expression 0 0 0\n";
-        
+        cout << endl
+             << "Invalid Expression! \n";
     }
     if (isSOP(expression))
     {
-        cout<< "            SOP\n";
+        cout << "            SOP\n";
     }
     else
     {
-        cout<< "            POS\n";
+        cout << "            POS\n";
     }
-    
-    if (validation(expression)){
+
+    if (validation(expression))
+    {
         string bool_exp = transform(expression);
-        cout <<" \t" << bool_exp<< "\n"; // for testing the transform function
-        printTruthTable(bool_exp);
+        cout << " \t" << bool_exp << "\n"; // for testing the transform function
+        vector<string> minterms = printTruthTable(bool_exp);
+        PrintBinaryMinterms(minterms);
     }
-    else{
+    else
+    {
         cout << "cant process the truth table ... Expression INVALID" << endl;
     }
 }
-

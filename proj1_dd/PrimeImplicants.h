@@ -15,29 +15,60 @@ using namespace std;
 
 //----------------------Prime Implicant extraction and utilities----------------------
     
-// Extract minterms and binary representations
-    /*
-     ...
-     */
-
-//--------------------------------------------------------------------------------------
-
-
-
 //---------------To be used for QM------------------
-bool compareByOnes(int &a, int &b)
+int countOnes(const string &binaryString) {
+    return count(binaryString.begin(), binaryString.end(), '1');
+}
+
+bool compareByOnes(const string & a, const string & b)
 {
-    int aOnes = __builtin_popcount(a);
-    int bOnes = __builtin_popcount(b);
-    return aOnes < bOnes;
+    return countOnes(a) < countOnes(b);
 };
 
-void sortbyones(vector<int> &x)
+void sortbyones(vector<string> &x)
 {
     sort(x.begin(), x.end(), compareByOnes);
 
 };
-#endif /* PrimeImplicants_h */
 
+void PrintBinaryMinterms(vector<string> minterms)
+{
+    //---------------------------------------Print Minterms in Binary form----------------------------------
+
+sortbyones(minterms);
+cout<< "\n\nMinterms in sorted binary form: \n";
+vector<string> binary;
+string temp = "";
+//binary representation
+for (int i = 0; i < minterms.size(); i++) {
+   
+    for (int j = 0; j < minterms[i].length(); j++) {
+        if (isalpha(minterms[i][j])&& minterms[i][j+1]=='\'')
+        {
+            temp += '0';
+            j++;
+        }
+            
+        else if (isalpha(minterms[i][j]))
+            temp += '1';
+    }
+          
+    binary.push_back(temp);
+    temp = "";
+    
+}
+for (int j = 0; j < binary.size(); j++) {
+        cout << binary[j]<<endl;
+    }
+
+    cout<<"\n";
+
+    
+};
+
+
+
+
+#endif /* PrimeImplicants_h */
 #pragma clang diagnostic pop
 

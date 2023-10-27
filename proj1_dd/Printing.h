@@ -13,10 +13,50 @@
 #include <cmath>
 using namespace std;
 
+
+
+//----------------------------TESTING-------------------------------------
+
+// Function to extract prime implicants from canonical SoP expression
+vector<string> extractPrimeImplicants(const string &sopExpression) {
+    vector<string> terms; // Split the SoP expression into terms
+    string term = "";
+    for (char c : sopExpression) {
+        if (c == '+') {
+            terms.push_back(term);
+            term = "";
+        } else {
+            term += c;
+        }
+    }
+    terms.push_back(term); // Add the last term
+
+  //  vector<string> primeImplicants;
+
+    //print the prime implicants
+    cout << "\n\n\n terms: ";
+    for (size_t i = 0; i < terms.size(); i++) {
+        cout << terms[i];
+        if (i < terms.size() - 1) {
+            cout << " ";
+        }
+    }
+
+   // return primeImplicants;
+   return terms;
+}
+//---------------------------TESTING----------------------------------------
+
+
+
+
+
+
+
 //--------------- Helper functions for Print ------------------
 
 // Function to transform the expression to the standered or, and, not
-string transform(string exp) // needs more check for bugs !!!!
+string transform(string exp)                                                     // needs more check for bugs !!!!
 {
     for(int i = 0; i< exp.length(); i++){
         if(exp[i] == '+')
@@ -153,8 +193,8 @@ bool convert_exp(const string& expression) {
     the output needs more organization --> variables output in alphabetical order
  */
 
-// funtcion to print the truth table and canonical PoS/SoP
-void printTruthTable(const string &expression) {
+// funtcion to print the truth table and canonical PoS/SoP, returns the canonical SoP
+vector<string> printTruthTable(const string &expression) {
     int numVariables = 0;
     vector<char> variables;
     vector<string> minterms;  // To store minterms
@@ -260,12 +300,8 @@ void printTruthTable(const string &expression) {
         }
     }
     cout << endl;
+    return minterms;
 
-    
-// Extract minterms and binary representations
-    /*
-     ...
-     */
 }
 
 //----------------------------------------------------------------------------------------------------
