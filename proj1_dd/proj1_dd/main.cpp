@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
-#include "../functions_1.h"
+#include "../Printing.h"
+#include "../Validation.h"
+#include "../PrimeImplicants.h"
 using namespace std;
 
 int main() {
@@ -15,7 +17,8 @@ int main() {
     //-----------------------User Input and Validation-----------------------
     
     string expression;
-    getline(cin, expression);cout << endl;
+    getline(cin, expression);
+    cout << endl;
     
     if (validation(expression))
     {
