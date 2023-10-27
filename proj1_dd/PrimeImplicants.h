@@ -7,10 +7,6 @@
 #include <vector>
 #include <cctype>
 #include <algorithm>
-#include <stack>
-#include <set>
-#include <map>
-#include <cmath>
 using namespace std;
 
 //----------------------Prime Implicant extraction and utilities----------------------
