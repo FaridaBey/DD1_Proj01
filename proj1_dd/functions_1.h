@@ -318,7 +318,9 @@ bool convert_exp(const string& expression) {
 void printTruthTable(const string &expression) {
     int numVariables = 0;
     vector<char> variables;
-
+    vector<string> minterms;  // To store minterms
+    vector<string> maxterms;  // To store maxterms
+    
     // Extract variables from the expression
     for (char c : expression) {
         if (isalpha(c) && find(variables.begin(), variables.end(), c) == variables.end()) {
@@ -326,15 +328,15 @@ void printTruthTable(const string &expression) {
             numVariables++;
         }
     }
-
+    
     int numRows = pow(2, numVariables);
-
+    
     // Print the header row with variable names
     for (char var : variables) {
         cout << var << " ";
     }
     cout << "| " << expression << endl;
-
+    
     // Print a separator line
     for (int i = 0; i < numVariables; i++) {
         cout << "- ";
@@ -344,7 +346,7 @@ void printTruthTable(const string &expression) {
         cout << "-";
     }
     cout << endl;
-
+    
     // Generate and print the truth table
     for (int row = 0; row < numRows; row++) {
         vector<int> variableValues;
@@ -353,12 +355,12 @@ void printTruthTable(const string &expression) {
             variableValues.push_back(temp % 2);
             temp /= 2;
         }
-
+        
         for (int i = 0; i < numVariables; i++) {
             cout << variableValues[i] << " ";
         }
         cout << "| ";
-
+        
         // Evaluate the expression for the current variable values
         string evaluationExpression = expression;
         bool  result = false;
@@ -367,25 +369,64 @@ void printTruthTable(const string &expression) {
             char varValue = (variableValues[i] == 0) ? '0' : '1';
             for (size_t pos = evaluationExpression.find(var); pos != string::npos; pos = evaluationExpression.find(var, pos)) {
                 evaluationExpression.replace(pos, 1, 1, varValue);
-//                result = convert_exp(evaluationExpression);
+                //                result = convert_exp(evaluationExpression);
             }
         }
         result = convert_exp(evaluationExpression);
         cout << result << endl;
-//        << evaluationExpression <<"        " 
+
+        // Collect terms for SoP and PoS
+        if (result) {
+            string sopTerm = "";
+            for (int i = 0; i < numVariables; i++) {
+                char var = variables[i];
+                char varValue = (variableValues[i] == 0) ? '\'' : ' ';
+                sopTerm += var;
+                sopTerm += varValue;
+                if (i < numVariables - 1) {
+                    sopTerm += "";
+                }
+            }
+            minterms.push_back(sopTerm);
+        }else {
+            string posTerm = "";
+            for (int i = 0; i < numVariables; i++) {
+                char var = variables[i];
+                char varValue = (variableValues[i] == 0) ? '\'' : ' ';
+                posTerm += var;
+                posTerm += varValue;
+                if (i < numVariables - 1) {
+                    posTerm += " + ";
+                }
+            }
+            maxterms.push_back("(" + posTerm + ")");
+        }
     }
+    
+    // Print the canonical SoP and PoS expressions
+    cout << "Canonical SoP: ";
+    for (size_t i = 0; i < minterms.size(); i++) {
+        cout << minterms[i];
+        if (i < minterms.size() - 1) {
+            cout << " +";
+        }
+    }
+    cout << endl;
+    
+    cout << "Canonical PoS: " ;
+    for (size_t i = 0; i < maxterms.size(); i++) {
+        cout << maxterms[i];
+        if (i < maxterms.size() - 1) {
+            cout << " ";
+        }
+    }
+    cout << endl;
 
     
-    //    // Extract minterms and binary representations
-    //    // Implement this part as described in your original code.
-    //
-    //    // Print the canonical SoP/PoS expressions
-    //    // You can uncomment this part once you implement it.
-    //    // string canonicalSoP = GenerateCanonicalSoP(truthTable, variableNames);
-    //    // string canonicalPoS = GenerateCanonicalPoS(truthTable, variableNames);
-    //
-    //    // cout << "Canonical SoP: " << canonicalSoP << endl;
-    //    // cout << "Canonical PoS: " << canonicalPoS << endl;
+// Extract minterms and binary representations
+    /*
+     ...
+     */
 }
 
 //----------------------------------------------------------------------------------------------------
