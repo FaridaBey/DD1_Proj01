@@ -46,10 +46,30 @@ int main()
         string bool_exp = transform(expression);
         cout << " \t" << bool_exp << "\n"; // for testing the transform function
         vector<string> minterms = printTruthTable(bool_exp);
-        PrintBinaryMinterms(minterms);
+        vector<string> orderedMinterms = PrintBinaryMinterms(minterms);
+
+            // Step 1: List all the minterms ordered by the number of 1's
+//            vector<string> orderedMinterms = listMintermsOrderedByOnes(minterms);
+
+            cout << "Minterms Ordered by Number of 1's: ";
+            for (const string &minterm : orderedMinterms) {
+                cout << minterm << " " << endl;
+            }
+            cout << endl;
+
+            // Step 2: Generate prime implicants
+            vector<string> primeImplicants = generatePrimeImplicants(orderedMinterms);
+
+            cout << "Prime Implicants: ";
+            for (const string &implicant : primeImplicants) {
+                cout << implicant << " " << endl;
+            }
+            cout << endl;
     }
     else
     {
         cout << "cant process the truth table ... Expression INVALID" << endl;
     }
+    
+    return 0;
 }

@@ -304,6 +304,8 @@ vector<string> printTruthTable(const string &expression) {
 
 }
 
+
+
 //----------------------------------------------------------------------------------------------------
 
 #endif /* Printing_h */

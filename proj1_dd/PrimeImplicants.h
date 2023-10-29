@@ -7,6 +7,7 @@
 #include <vector>
 #include <cctype>
 #include <algorithm>
+
 using namespace std;
 
 //----------------------Prime Implicant extraction and utilities----------------------
@@ -27,7 +28,7 @@ void sortbyones(vector<string> &x)
 
 };
 
-void PrintBinaryMinterms(vector<string> minterms)
+vector<string> PrintBinaryMinterms(vector<string> minterms)
 {
     //---------------------------------------Print Minterms in Binary form----------------------------------
 
@@ -53,14 +54,97 @@ for (int i = 0; i < minterms.size(); i++) {
     temp = "";
     
 }
-for (int j = 0; j < binary.size(); j++) {
-        cout << binary[j]<<endl;
+//for (int j = 0; j < binary.size(); j++) {
+//        cout << binary[j]<<endl;
+//    }
+//
+//    cout<<"\n";
+
+    return binary;
+};
+
+
+// Function to combine two binary strings
+string combineBinaryStrings(const string &a, const string &b) {
+    string result = "";
+    for (size_t i = 0; i < a.size(); i++) {
+        if (a[i] == b[i]) {
+            result += a[i];
+        } else {
+            result += '-';
+        }
+    }
+    return result;
+}
+
+// Function to list all the minterms ordered by the number of 1's
+vector<string> listMintermsOrderedByOnes(const vector<string> &minterms) {
+    vector<string> orderedMinterms = minterms;
+    sortbyones(orderedMinterms);
+    return orderedMinterms;
+}
+
+//// Function to generate prime implicants
+//vector<string> generatePrimeImplicants(vector<string> &minterms) {
+//    vector<string> primeImplicants;
+//    vector<string> unusedMinterms = minterms;
+//
+//    while (!unusedMinterms.empty()) {
+//        bool combined = false;
+//        vector<string> newUnusedMinterms;
+//
+//        for (size_t i = 0; i < unusedMinterms.size(); i++) {
+//            for (size_t j = i + 1; j < unusedMinterms.size(); j++) {
+//                string combinedTerm = combineBinaryStrings(unusedMinterms[i], unusedMinterms[j]);
+//                if (combinedTerm.find('-') != string::npos) {
+//                    primeImplicants.push_back(combinedTerm);
+//                    combined = true;
+//                } else {
+//                    newUnusedMinterms.push_back(unusedMinterms[i]);
+//                }
+//            }
+//        }
+//
+//        if (!combined) {
+//            primeImplicants.insert(primeImplicants.end(), unusedMinterms.begin(), unusedMinterms.end());
+//        }
+//
+//        unusedMinterms = newUnusedMinterms;
+//    }
+//
+//    return primeImplicants;
+//}
+// Function to generate prime implicants
+vector<string> generatePrimeImplicants(vector<string> &minterms) {
+    vector<string> primeImplicants;
+    vector<string> unusedMinterms = minterms;
+
+    while (!unusedMinterms.empty()) {
+        bool combined = false;
+        vector<string> newUnusedMinterms;
+
+        for (size_t i = 0; i < unusedMinterms.size(); i++) {
+            for (size_t j = i + 1; j < unusedMinterms.size(); j++) {
+                string combinedTerm = combineBinaryStrings(unusedMinterms[i], unusedMinterms[j]);
+                if (combinedTerm.find('-') != string::npos) {
+                    primeImplicants.push_back(combinedTerm);
+                    combined = true;
+                } else {
+                    newUnusedMinterms.push_back(unusedMinterms[i]);
+                }
+            }
+        }
+
+        if (!combined) {
+            primeImplicants.insert(primeImplicants.end(), unusedMinterms.begin(), unusedMinterms.end());
+        }
+
+        unusedMinterms = newUnusedMinterms;
     }
 
-    cout<<"\n";
+    return primeImplicants;
+}
 
-    
-};
 
 
 
