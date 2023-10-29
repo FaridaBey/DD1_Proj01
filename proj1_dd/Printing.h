@@ -330,7 +330,7 @@ void print_KMap(const vector<string>& minterms, const vector<char>& variables) {
     int numCols = pow(2, (variables.size() + 1) / 2);
 
     // Create a 2D vector to represent the K-Map
-    vector<vector<char>> kMap(numRows, vector<char>(numCols, ' '));
+    vector<vector<char>> kMap(numRows, vector<char>(numCols, '0'));
 
     // Fill in the K-Map with '1's based on the minterms
     for (int i = 0; i < minterms.size(); i++) {
