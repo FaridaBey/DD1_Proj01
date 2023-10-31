@@ -13,6 +13,8 @@
 #include <cmath>
 #include <iomanip>
 #include <ios>
+#include <bitset>
+#include <unordered_map>
 using namespace std;
 
 

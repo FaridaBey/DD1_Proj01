@@ -33,7 +33,6 @@ vector<string> PrintBinaryMinterms(vector<string> minterms)
     //---------------------------------------Print Minterms in Binary form----------------------------------
 
 sortbyones(minterms);
-//cout<< "\n\nMinterms in sorted binary form: \n";
 vector<string> binary;
 string temp = "";
 //binary representation
