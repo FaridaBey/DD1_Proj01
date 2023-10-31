@@ -33,7 +33,7 @@ vector<string> PrintBinaryMinterms(vector<string> minterms)
     //---------------------------------------Print Minterms in Binary form----------------------------------
 
 sortbyones(minterms);
-cout<< "\n\nMinterms in sorted binary form: \n";
+//cout<< "\n\nMinterms in sorted binary form: \n";
 vector<string> binary;
 string temp = "";
 //binary representation
@@ -63,91 +63,116 @@ for (int i = 0; i < minterms.size(); i++) {
     return binary;
 };
 
-
-// Function to combine two binary strings
-string combineBinaryStrings(const string &a, const string &b) {
-    string result = "";
-    for (size_t i = 0; i < a.size(); i++) {
-        if (a[i] == b[i]) {
-            result += a[i];
+// Function to convert a minterm (e.g., "a'b'c") to its binary representation (e.g., "010")
+string convertToBinary(const string& minterm) {
+    string binaryMinterm;
+    for (char c : minterm) {
+        if (c == '0' || c == '1') {
+            binaryMinterm += c;
+        } else if (c == '\'') {
+            binaryMinterm += 'X'; // Use 'X' for don't care
         } else {
-            result += '-';
+            // Handle variables (e.g., a, b, c)
+            // You need to map your variables to positions in the binary representation
+            // For example, if a, b, c correspond to 0, 1, 2, you can use:
+            // binaryMinterm += to_string(variableToPosition(c));
         }
     }
-    return result;
+    return binaryMinterm;
 }
-
-// Function to list all the minterms ordered by the number of 1's
-vector<string> listMintermsOrderedByOnes(const vector<string> &minterms) {
-    vector<string> orderedMinterms = minterms;
-    sortbyones(orderedMinterms);
-    return orderedMinterms;
+//------------------------------------------Prime Implicants------------------------------------------
+/*
+ For each PI show the minterms it covers as well as its
+ binary representation.
+ */
+void printPrimeImplicants(const vector<string>& primeImplicants, const map<string, vector<string>>& mintermsCoveredByPrimeImplicant) {
+    for (const auto& implicant : primeImplicants) {
+        cout << "Prime Implicant: " << implicant << " covers Minterms: ";
+        for (const string& minterm : mintermsCoveredByPrimeImplicant.at(implicant)) {
+            cout << minterm << " ";
+        }
+//        cout << " Binary Representation: " << implicant << endl;
+    }
 }
+vector<string> generatePrimeImplicants(const vector<string>& minterms) {
+    // Sort minterms ordered by the number of 1's in ascending order using your custom sorting function
+    vector<string> sortedMinterms = minterms;
+    sortbyones(sortedMinterms);
 
-//// Function to generate prime implicants
-//vector<string> generatePrimeImplicants(vector<string> &minterms) {
-//    vector<string> primeImplicants;
-//    vector<string> unusedMinterms = minterms;
-//
-//    while (!unusedMinterms.empty()) {
-//        bool combined = false;
-//        vector<string> newUnusedMinterms;
-//
-//        for (size_t i = 0; i < unusedMinterms.size(); i++) {
-//            for (size_t j = i + 1; j < unusedMinterms.size(); j++) {
-//                string combinedTerm = combineBinaryStrings(unusedMinterms[i], unusedMinterms[j]);
-//                if (combinedTerm.find('-') != string::npos) {
-//                    primeImplicants.push_back(combinedTerm);
-//                    combined = true;
-//                } else {
-//                    newUnusedMinterms.push_back(unusedMinterms[i]);
-//                }
-//            }
-//        }
-//
-//        if (!combined) {
-//            primeImplicants.insert(primeImplicants.end(), unusedMinterms.begin(), unusedMinterms.end());
-//        }
-//
-//        unusedMinterms = newUnusedMinterms;
-//    }
-//
-//    return primeImplicants;
-//}
-// Function to generate prime implicants
-vector<string> generatePrimeImplicants(vector<string> &minterms) {
     vector<string> primeImplicants;
-    vector<string> unusedMinterms = minterms;
+    vector<bool> marked(sortedMinterms.size(), false);
+    // Create a map to store the minterms covered by each prime implicant
+    map<string, vector<string>> mintermsCoveredByPrimeImplicant;
 
-    while (!unusedMinterms.empty()) {
-        bool combined = false;
-        vector<string> newUnusedMinterms;
+    while (true) {
+        vector<string> nextColumn;
 
-        for (size_t i = 0; i < unusedMinterms.size(); i++) {
-            for (size_t j = i + 1; j < unusedMinterms.size(); j++) {
-                string combinedTerm = combineBinaryStrings(unusedMinterms[i], unusedMinterms[j]);
-                if (combinedTerm.find('-') != string::npos) {
-                    primeImplicants.push_back(combinedTerm);
-                    combined = true;
-                } else {
-                    newUnusedMinterms.push_back(unusedMinterms[i]);
+        for (size_t i = 0; i < sortedMinterms.size(); ++i) {
+            for (size_t j = i + 1; j < sortedMinterms.size(); ++j) {
+                const string& term1 = sortedMinterms[i];
+                const string& term2 = sortedMinterms[j];
+                int differingBitCount = 0;
+                string combinedTerm = "";
+
+                for (size_t k = 0; k < term1.size(); ++k) {
+                    if (term1[k] != term2[k]) {
+                        differingBitCount++;
+                        combinedTerm += '-';
+                    } else {
+                        combinedTerm += term1[k];
+                    }
+                }
+
+                // Check if the terms can be combined (only one differing bit)
+                if (differingBitCount == 1) {
+                    nextColumn.push_back(combinedTerm);
+                    marked[i] = marked[j] = true; // Mark as combined
                 }
             }
         }
 
-        if (!combined) {
-            primeImplicants.insert(primeImplicants.end(), unusedMinterms.begin(), unusedMinterms.end());
+        // Mark and save uncombined terms as prime implicants
+        for (size_t i = 0; i < sortedMinterms.size(); ++i) {
+            if (!marked[i]) {
+                primeImplicants.push_back(sortedMinterms[i]);
+                // Store the minterms covered by this prime implicant
+                for (size_t k = 0; k < minterms.size(); ++k) {
+                    if (sortedMinterms[i] == minterms[k]) {
+                        mintermsCoveredByPrimeImplicant[sortedMinterms[i]].push_back(minterms[k]);
+                    }
+                }
+            }
         }
 
-        unusedMinterms = newUnusedMinterms;
+        // If no more combinations are possible, exit the loop
+        if (nextColumn.empty()) {
+            break;
+        }
+
+        sortedMinterms = nextColumn; // Move to the next column
+        marked.assign(sortedMinterms.size(), false); // Reset the marked array
     }
+    // Sort primeImplicants by the number of ones (ascending order)
+    sortbyones(primeImplicants);
+
+    // Remove duplicates
+    primeImplicants.erase(unique(primeImplicants.begin(), primeImplicants.end()), primeImplicants.end());
 
     return primeImplicants;
 }
-
-
-
-
+// Function to print a prime implicant along with the minterms it covers*(NOT CORRECT)*
+void printPrimeImplicant_1(const vector<string>& primeImplicant, const vector<string>& minterms) {
+    cout << "Prime Implicant: " ;
+    for (const string& pi : primeImplicant) {
+        cout << pi << " \n";
+    }
+    cout << endl;
+    cout << "Covers Minterms: ";
+    for (const string& minterm : minterms) {
+        cout << minterm << " ";
+    }
+    cout << endl;
+}
 
 #endif /* PrimeImplicants_h */
 #pragma clang diagnostic pop

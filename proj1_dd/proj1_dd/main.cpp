@@ -45,27 +45,17 @@ int main()
     {
         string bool_exp = transform(expression);
         cout << " \t" << bool_exp << "\n"; // for testing the transform function
+        
+//---------------------------------------Printing the TRUTH TABLE---------------------------------------------
         vector<string> minterms = printTruthTable(bool_exp);
-        //vector<string> orderedMinterms = PrintBinaryMinterms(minterms);
+        vector<string> Minterms = PrintBinaryMinterms(minterms);//binary
+        
+//---------------------------------------Printing the PI------------------------------------------------------
+        vector<string> primeImplicants = generatePrimeImplicants(Minterms);
+        printPrimeImplicant_1(primeImplicants, Minterms);
 
-            // Step 1: List all the minterms ordered by the number of 1's
-//            vector<string> orderedMinterms = listMintermsOrderedByOnes(minterms);
-//
-//            cout << "Minterms Ordered by Number of 1's: ";
-//            for (const string &minterm : orderedMinterms) {
-//                cout << minterm << " " << endl;
-//            }
-//            cout << endl;
-//
-//            // Step 2: Generate prime implicants
-//            vector<string> primeImplicants = generatePrimeImplicants(orderedMinterms);
-//
-//            cout << "Prime Implicants: ";
-//            for (const string &implicant : primeImplicants) {
-//                cout << implicant << " " << endl;
-//            }
-//            cout << endl;
-//        printing the k-map
+
+//--------------------------------------Printing the K-MAP----------------------------------------------------
         cout<< "\n\t\t\tK-MAP\t\t\n\n" ;
         vector<char> variables = extractVar(bool_exp);
         vector<string> Kminterms = PrintBinaryMinterms(minterms); // removed the "Minterms in sorted binary form:" from printbinary func
@@ -80,3 +70,6 @@ int main()
     
     return 0;
 }
+
+
+ 

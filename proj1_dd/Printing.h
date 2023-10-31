@@ -194,6 +194,7 @@ bool convert_exp(const string& expression) {
 /*
     the output needs more organization --> variables output in alphabetical order
  */
+//count var
 
 // funtcion to print the truth table and canonical PoS/SoP, returns the canonical SoP
 vector<string> printTruthTable(const string &expression) {
