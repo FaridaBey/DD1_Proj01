@@ -194,7 +194,7 @@ vector<int> PrintDecimalMinterms( vector<string> Minterms)
     }
     //print minterms
  for (int i = 0; i < decimalMinterms.size(); i++) {
-        cout << "decimal minterm: " <<decimalMinterms[i] << " \n ";
+        cout <<decimalMinterms[i] << " \n ";
     }
     return decimalMinterms;
 }

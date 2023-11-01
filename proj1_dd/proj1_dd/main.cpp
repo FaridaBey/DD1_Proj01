@@ -25,7 +25,7 @@ int main()
     if (validation(expression))
     {
         cout << endl
-             << "Valid Expression\n";
+             << "Valid Expression: ";
     }
     else
     {
@@ -34,11 +34,11 @@ int main()
     }
     if (isSOP(expression))
     {
-        cout << "            SOP\n";
+        cout << "SOP\n";
     }
     else
     {
-        cout << "            POS\n";
+        cout << "POS\n";
     }
 
     if (validation(expression))
@@ -57,11 +57,11 @@ int main()
 
 
 //--------------------------------------Printing the K-MAP----------------------------------------------------
-        cout<< "\n\t\t\tK-MAP\t\t\n\n" ;
-        vector<char> variables = extractVar(bool_exp);
-        vector<string> Kminterms = PrintBinaryMinterms(minterms); // removed the "Minterms in sorted binary form:" from printbinary func
-        print_KMap(Kminterms, variables);
-        cout << "\n";
+        // cout<< "\n\t\t\tK-MAP\t\t\n\n" ;
+        // vector<char> variables = extractVar(bool_exp);
+        // vector<string> Kminterms = PrintBinaryMinterms(minterms); // removed the "Minterms in sorted binary form:" from printbinary func
+        // print_KMap(Kminterms, variables);
+        // cout << "\n";
     }
     
     else
