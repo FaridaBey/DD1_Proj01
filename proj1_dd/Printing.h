@@ -323,7 +323,7 @@ vector<char> extractVar(const string& boolean_exp) {
     
     return variableNames;
 }
-
+//----------------------------Part 7--------------------------------------
 // Function to convert a decimal number to Gray code; to output the headers in correct order
 int decimalToGray(int num) {
     return num ^ (num >> 1);

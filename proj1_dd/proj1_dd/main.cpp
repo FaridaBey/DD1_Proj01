@@ -47,35 +47,32 @@ int main()
         string bool_exp = transform(expression);
         // cout << " \t" << bool_exp << "\n"; // for testing the transform function
 
-        //---------------------------------------Printing the TRUTH TABLE---------------------------------------------
+//--------------------------------------- Printing the TRUTH TABLE ---------------------------------------------
         cout << "\n\n";
         vector<string> minterms = printTruthTable(bool_exp);
         cout << "\n\n";
         vector<string> Minterms = PrintBinaryMinterms(minterms); // binary
         vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
 
-        //---------------------------------------Printing the PI------------------------------------------------------
+//--------------------------------------- Printing the PI ------------------------------------------------------
         //        vector<string> primeImplicants = generatePrimeImplicants(Minterms);
         //        printPrimeImplicant_1(primeImplicants, Minterms);
 
         map<string, string> PI = generatePrimeImplicants(Minterms);
-        for (const auto &pair : PI)
-        {
-            cout << "Prime Implicant: " << pair.first << ", Minterms Covered: " << pair.second << endl;
-        }
+        printMintermsCoveredByPrimeImplicant(PI);
 
-        //-----------------------------------------Printing the EPI-------------------------------------------------
+//----------------------------------------- Printing the EPI -------------------------------------------------
         vector<string> EPIterms;
         vector<string> EPI = generateEssentialPrimeImplicants(PI);
         // print EPI
-        cout << "\n\nEssential Prime Implicants: ";
+        cout << "\n\nEssential Prime Implicants: \n";
         for (int i = 0; i < EPI.size(); i++)
         {
-            cout << EPI[i] << " ";
+            cout << i+1 << ": " <<EPI[i] << "\n";
         }
-        //---------------------------------------Printing non-EPI--------------------------------------------------
+//--------------------------------------- Printing non-EPI --------------------------------------------------
          vector<string> nonEPIMinterms = generateMintermsNOTCoveredByEPI(PI, decimalMinterms, EPI);
-        cout<<"\n\nMinterms not covered by EPI: ";
+        cout<<"\n\nMinterms not covered by EPI: \n";
         if(nonEPIMinterms.size()==0)
         {
             cout<<"None";
@@ -84,12 +81,15 @@ int main()
         {
             for (int i = 0; i < nonEPIMinterms.size(); i++)
             {
-                cout << nonEPIMinterms[i] << " ";
+                cout << i+1 << ": " << nonEPIMinterms[i] << "\n";
             }
         }
-
-
-        //--------------------------------------Printing the K-MAP----------------------------------------------------
+//-------------------------------- Printing Minimized Boolean Expression --------------------------------
+        string minimizedExpression = generateMinimizedExpression(EPI, nonEPIMinterms,PI);
+        
+        cout << "\n\nMinimized Boolean Expression: " << minimizedExpression << endl;
+        
+//-------------------------------------- Printing the K-MAP ----------------------------------------------------
         cout << "\n\n\t\t\tK-MAP\t\t\n\n";
         vector<char> variables = extractVar(bool_exp);
         vector<string> Kminterms = PrintBinaryMinterms(minterms); // removed the "Minterms in sorted binary form:" from printbinary func

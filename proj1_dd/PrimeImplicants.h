@@ -9,24 +9,11 @@
 #include <map>
 #include <stack>
 #include <algorithm>
+#include <sstream>
 
 using namespace std;
 
 //----------------------Prime Implicant extraction and utilities----------------------
-    
-struct Implicants
-{
-    string combinedMinterm;
-    bool isCombined;
-    vector<int> coveredMins;
-    
-    Implicants(string combinedMinterm, bool isCombined, vector<int> coveredMins)
-    {
-        this->combinedMinterm = combinedMinterm;
-        this->isCombined = isCombined;
-        this->coveredMins = coveredMins;
-    }
-};
 
 //---------------To be used for QM------------------
 int countOnes(const string &binaryString) {
@@ -69,97 +56,11 @@ for (int i = 0; i < minterms.size(); i++) {
     temp = "";
     
 }
-//for (int j = 0; j < binary.size(); j++) {
-//        cout << binary[j]<<endl;
-//    }
-//
-//    cout<<"\n";
-
     return binary;
 };
 //------------------------------------------Prime Implicants------------------------------------------
-/*
- For each PI show the minterms it covers as well as its
- binary representation.
- */
-void printPrimeImplicants(const vector<string>& primeImplicants, const map<string, vector<string>>& mintermsCoveredByPrimeImplicant) {
-    for (const auto& implicant : primeImplicants) {
-        cout << "Prime Implicant: " << implicant << " covers Minterms: ";
-        for (const string& minterm : mintermsCoveredByPrimeImplicant.at(implicant)) {
-            cout << minterm << " ";
-        }
-//        cout << " Binary Representation: " << implicant << endl;
-    }
-}
 
-//vector<string> generatePrimeImplicants(const vector<string>& minterms) {
-//    // Create a copy of the minterms to sort, so the original list remains unaltered
-//    vector<string> sortedMinterms = minterms;
-//    // Sort minterms ordered by the number of 1's in ascending order using a custom sorting function
-//    sortbyones(sortedMinterms);
-//
-//    // Initialize containers for prime implicants and marked minterms
-//    vector<string> primeImplicants;
-//    vector<bool> marked(sortedMinterms.size(), false);
-//    
-//    // Create a map to store the minterms covered by each prime implicant
-//    map<string, string> mintermsCoveredByPrimeImplicant;
-//
-//    bool column = true; // A flag to control the loop
-//    while (column) {
-//        vector<string> nextColumn; // Create the next column for combination
-//        
-//        // Loop through each pair of minterms in the current column
-//        for (size_t i = 0; i < sortedMinterms.size(); ++i) {
-//            for (size_t j = i + 1; j < sortedMinterms.size(); ++j) {
-//                const string& term1 = sortedMinterms[i];
-//                const string& term2 = sortedMinterms[j];
-//                int differingBitCount = 0;
-//                string combinedTerm = "";
-//
-//                // Compare the two terms and create a combined term with differing bits marked as '-'
-//                for (size_t k = 0; k < term1.size(); ++k) {
-//                    if (term1[k] != term2[k]) {
-//                        differingBitCount++;
-//                        combinedTerm += '-';
-//                    } else {
-//                        combinedTerm += term1[k];
-//                    }
-//                }
-//
-//                // Check if the terms can be combined (only one differing bit)
-//                if (differingBitCount == 1) {
-//                    nextColumn.push_back(combinedTerm); // Add the combined term to the next column
-//                    marked[i] = marked[j] = true; // Mark the minterms as combined
-//                }
-//            }
-//        }
-//
-//        // Mark and save uncombined terms as prime implicants
-//        for (size_t i = 0; i < sortedMinterms.size(); ++i) {
-//            if (!marked[i]) {
-//                primeImplicants.push_back(sortedMinterms[i]); // Store the prime implicant
-//                
-//                    }
-//        }
-//
-//        // If no more combinations are possible, exit the loop
-//        if (nextColumn.empty()) {
-//            column = false;
-//        }
-//
-//        sortedMinterms = nextColumn; // Move to the next column
-//        marked.assign(sortedMinterms.size(), false); // Reset the marked array for the next column
-//    }
-//
-//    // Sort primeImplicants by the number of ones (ascending order)
-//    sortbyones(primeImplicants);
-//
-//    // Remove duplicates from the list of prime implicants
-//    primeImplicants.erase(unique(primeImplicants.begin(), primeImplicants.end()), primeImplicants.end());
-//
-//    return primeImplicants;
-//}
+//----------------------------Part 3--------------------------------------
 int calculateDecimalValue(const string& binaryString) {
     int decimalValue = 0;
     int base = 1;
@@ -266,40 +167,21 @@ map<string, string> generatePrimeImplicants(const vector<string>& minterms) {
     return finalPrimeImplicants;
 }
 
-
-// Function to print a prime implicant along with the minterms it covers*(NOT CORRECT)*
-void printPrimeImplicant_1(const vector<string>& primeImplicant, const vector<string>& minterms) {
-    cout << "Prime Implicant: " ;
-    for (const string& pi : primeImplicant) {
-        cout << pi << " \n";
-    }
-    cout << endl;
-    cout << "Covered Minterms: ";
-    for (const string& minterm : minterms) {
-        cout << minterm << " ";
-    }
-    cout << endl;
-}
-
 vector<int> PrintDecimalMinterms( vector<string> Minterms)
 {
     vector<int> decimalMinterms;
     for (int i = 0; i < Minterms.size(); i++) {
         decimalMinterms.push_back(stoi(Minterms[i], nullptr, 2));
     }
-    //print minterms
-//  for (int i = 0; i < decimalMinterms.size(); i++) {
-//         cout <<decimalMinterms[i] << " \n ";
-//     }
     return decimalMinterms;
 }
 void printMintermsCoveredByPrimeImplicant(const map<string, string>& mintermsCoveredByPrimeImplicant) {
-    for (const auto& entry : mintermsCoveredByPrimeImplicant) {
-        cout << "Implicant: " << entry.first << " Covers Minterms (Decimal): " << entry.second << endl;
-    }
+            for (const auto &pair : mintermsCoveredByPrimeImplicant)
+            {
+                cout << "Prime Implicant: " << pair.first << ", Minterms Covered: " << pair.second << endl;
+            }
 }
-
-
+//----------------------------Part 4--------------------------------------
 vector<string> generateEssentialPrimeImplicants(map<string, string> PI) {
     vector<string> EPI;
     map<string, int> mintermCount;
@@ -343,7 +225,7 @@ vector<string> generateEssentialPrimeImplicants(map<string, string> PI) {
 
     return EPI;
 }
-
+//----------------------------Part 5--------------------------------------
 vector<string> generateMintermsNOTCoveredByEPI(map<string, string> PI, const vector<int>& Minterms, vector<string> EPIs) {
     vector<int> EPIMinterms;
     vector<string> nonEPIMinterms;
@@ -372,6 +254,87 @@ vector<string> generateMintermsNOTCoveredByEPI(map<string, string> PI, const vec
 
     return nonEPIMinterms;
 }
+//----------------------------Part 6--------------------------------------
+//helpers
+
+vector<string> splitMinterms(const string& minterms) {
+    vector<string> result;
+    istringstream iss(minterms);
+    string minterm;
+    while (getline(iss, minterm, ',')) {
+        result.push_back(minterm);
+    }
+    return result;
+}
+
+int countCoveredMinterms(const vector<string>& coveredMinterms, const vector<string>& mintermsNotCovered) {
+    int count = 0;
+    for (const string& minterm : mintermsNotCovered) {
+        if (find(coveredMinterms.begin(), coveredMinterms.end(), minterm) != coveredMinterms.end()) {
+            count++;
+        }
+    }
+    return count;
+}
+
+void removeCoveredMinterms(vector<string> coveredMinterms, vector<string> mintermsNotCovered) {
+    vector<string> newMintermsNotCovered;
+    for (const string& minterm : mintermsNotCovered) {
+        if (find(coveredMinterms.begin(), coveredMinterms.end(), minterm) == coveredMinterms.end()) {
+            newMintermsNotCovered.push_back(minterm);
+        }
+    }
+    mintermsNotCovered = newMintermsNotCovered; // Update the mintermsNotCovered vector
+}
+//end helpers
+
+// Function to Get Minimized Boolean exp (binary)
+string generateMinimizedExpression(const vector<string>& essentialPrimeImplicants, const vector<string>& mintermsNotCovered, map<string, string>& primeImplicants) {
+    string minimizedExpression = "";
+
+    // Copy essential prime implicants to the result
+    vector<string> selectedPrimeImplicants = essentialPrimeImplicants;
+
+    vector<string> remainingMinterms = mintermsNotCovered;
+
+    // Continue selecting prime implicants until all minterms are covered
+    while (!remainingMinterms.empty()) {
+        string bestCandidate;  // The prime implicant that covers the most remaining non-covered minterms
+        int maxCovered = 0;  // The number of remaining non-covered minterms covered by the best candidate
+
+        for (const auto& pi : primeImplicants) {
+            if (find(selectedPrimeImplicants.begin(), selectedPrimeImplicants.end(), pi.first) == selectedPrimeImplicants.end()) {
+                vector<string> coveredMinterms = splitMinterms(pi.second);
+
+                // Count how many of the remaining minterms are covered by this candidate
+                int coveredCount = countCoveredMinterms(coveredMinterms, remainingMinterms);
+
+                if (coveredCount > maxCovered) {
+                    maxCovered = coveredCount;
+                    bestCandidate = pi.first;
+                }
+            }
+        }
+
+        if (!bestCandidate.empty()) {
+            selectedPrimeImplicants.push_back(bestCandidate);
+
+            // Remove the minterms covered by the selected prime implicant from the remaining minterms
+            vector<string> coveredMinterms = splitMinterms(primeImplicants[bestCandidate]);
+            removeCoveredMinterms(coveredMinterms, remainingMinterms);
+        } else {
+            break;  // No more prime implicants can cover additional minterms
+        }
+    }
+
+    // Construct the minimized expression using the selected prime implicants
+    for (const string& pi : selectedPrimeImplicants) {
+        minimizedExpression += (minimizedExpression.empty() ? "" : " + ") + pi;
+    }
+
+    return minimizedExpression;
+}
+
 
 
 #endif /* PrimeImplicants_h */
