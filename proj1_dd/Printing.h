@@ -315,9 +315,9 @@ vector<string> printTruthTable(const string &expression) {
 vector<char> extractVar(const string& boolean_exp) {
     vector<char> variableNames;
     
-    for (char character : boolean_exp) {
-        if (isalpha(character) && islower(character)) {
-            variableNames.push_back(character);
+    for (char c : boolean_exp) {
+        if (isalpha(c) && find(variableNames.begin(), variableNames.end(), c) == variableNames.end()) {
+            variableNames.push_back(c);
         }
     }
     
