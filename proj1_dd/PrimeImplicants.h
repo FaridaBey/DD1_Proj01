@@ -75,23 +75,6 @@ for (int i = 0; i < minterms.size(); i++) {
 
     return binary;
 };
-
-// Function to convert a minterm (e.g., "a'b'c") to its binary representation (e.g., "010")
-string convertToBinary(const string& minterm) {
-    string binaryMinterm;
-    for (char c : minterm) {
-        if (c == '0' || c == '1') {
-            binaryMinterm += c;
-        } 
-         else {
-            // Handle variables (e.g., a, b, c)
-            // You need to map your variables to positions in the binary representation
-            // For example, if a, b, c correspond to 0, 1, 2, you can use:
-            // binaryMinterm += to_string(variableToPosition(c));
-        }
-    }
-    return binaryMinterm;
-}
 //------------------------------------------Prime Implicants------------------------------------------
 /*
  For each PI show the minterms it covers as well as its

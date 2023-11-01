@@ -213,7 +213,7 @@ vector<string> printTruthTable(const string &expression) {
         }
     }
     
-    //sort(variables.begin(), variables.end()); to sort the truth table header only
+    sort(variables.begin(), variables.end()); // to sort the truth table header only
 
     int numRows = pow(2, numVariables);
     
@@ -221,7 +221,7 @@ vector<string> printTruthTable(const string &expression) {
     for (char var : variables) {
         cout << var << " ";
     }
-    cout << "| " << expression << endl;
+    cout << "| " << "OUTPUT" << endl;
     
     // Print a separator line
     for (int i = 0; i < numVariables; i++) {
@@ -237,9 +237,10 @@ vector<string> printTruthTable(const string &expression) {
     for (int row = 0; row < numRows; row++) {
         vector<int> variableValues;
         int temp = row;
-        for (int i = 0; i < numVariables; i++) {
-            variableValues.push_back(temp % 2);
-            temp /= 2;
+        // Calculate binary values of variables for the current row, starting from the most significant bit
+        for (int i = numVariables - 1; i >= 0; i--) {
+            int bit = (temp >> i) & 1; // Extract the most significant bit
+            variableValues.push_back(bit);
         }
         
         for (int i = 0; i < numVariables; i++) {
