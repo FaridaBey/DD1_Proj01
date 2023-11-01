@@ -311,6 +311,7 @@ vector<string> printTruthTable(const string &expression) {
     return minterms;
 
 }
+//----------------------------Part 7--------------------------------------
 //function to extract variables: to be used in Kmap
 vector<char> extractVar(const string& boolean_exp) {
     vector<char> variableNames;
@@ -323,7 +324,7 @@ vector<char> extractVar(const string& boolean_exp) {
     
     return variableNames;
 }
-//----------------------------Part 7--------------------------------------
+
 // Function to convert a decimal number to Gray code; to output the headers in correct order
 int decimalToGray(int num) {
     return num ^ (num >> 1);

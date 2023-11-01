@@ -86,12 +86,13 @@ int main()
         }
 //-------------------------------- Printing Minimized Boolean Expression --------------------------------
         string minimizedExpression = generateMinimizedExpression(EPI, nonEPIMinterms,PI);
-        
-        cout << "\n\nMinimized Boolean Expression: " << minimizedExpression << endl;
+        vector<char> variables = extractVar(bool_exp);
+        sort(variables.begin(), variables.end());
+        cout << "\n\nMinimized Boolean Expression: " <<final_answer(minimizedExpression, variables) << endl;
         
 //-------------------------------------- Printing the K-MAP ----------------------------------------------------
         cout << "\n\n\t\t\tK-MAP\t\t\n\n";
-        vector<char> variables = extractVar(bool_exp);
+   
         vector<string> Kminterms = PrintBinaryMinterms(minterms); // removed the "Minterms in sorted binary form:" from printbinary func
         print_KMap(Kminterms, variables);
         cout << "\n";

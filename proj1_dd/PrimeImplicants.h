@@ -334,7 +334,29 @@ string generateMinimizedExpression(const vector<string>& essentialPrimeImplicant
 
     return minimizedExpression;
 }
+string final_answer(string boolexp, const vector<char>& variables) {
+    string finalexp;
+    size_t varIndex = 0;
 
+    for (size_t i = 0; i < boolexp.length(); i++) {
+        if (boolexp[i] == '1') {
+            finalexp += variables[varIndex];
+            varIndex++;
+        } else if (boolexp[i] == '0') {
+            finalexp += variables[varIndex];
+            finalexp += "'";
+            varIndex++;
+        } else if (boolexp[i] == '-') {
+            varIndex++;
+        } else if (boolexp[i] == '+') {
+            finalexp += " + ";
+            varIndex = 0; // Reset the variable index to the beginning
+        }
+
+    }
+    
+    return finalexp;
+}
 
 
 #endif /* PrimeImplicants_h */
