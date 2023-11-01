@@ -288,9 +288,9 @@ vector<int> PrintDecimalMinterms( vector<string> Minterms)
         decimalMinterms.push_back(stoi(Minterms[i], nullptr, 2));
     }
     //print minterms
- for (int i = 0; i < decimalMinterms.size(); i++) {
-        cout <<decimalMinterms[i] << " \n ";
-    }
+//  for (int i = 0; i < decimalMinterms.size(); i++) {
+//         cout <<decimalMinterms[i] << " \n ";
+//     }
     return decimalMinterms;
 }
 void printMintermsCoveredByPrimeImplicant(const map<string, string>& mintermsCoveredByPrimeImplicant) {
@@ -342,6 +342,35 @@ vector<string> generateEssentialPrimeImplicants(map<string, string> PI) {
     EPI.erase(unique(EPI.begin(), EPI.end()), EPI.end());
 
     return EPI;
+}
+
+vector<string> generateMintermsNOTCoveredByEPI(map<string, string> PI, const vector<int>& Minterms, vector<string> EPIs) {
+    vector<int> EPIMinterms;
+    vector<string> nonEPIMinterms;
+
+    // Loop through the map and extract the minterms that are covered by the Essential Prime Implicants
+    for(auto epi : EPIs)
+    {
+        string minterms = PI[epi];
+        string delimiter = ", ";
+        size_t pos = 0;
+        string token;
+        while ((pos = minterms.find(delimiter)) != string::npos) {
+            token = minterms.substr(0, pos);
+            EPIMinterms.push_back(stoi(token));
+            minterms.erase(0, pos + delimiter.length());
+        }
+        EPIMinterms.push_back(stoi(minterms));
+    }
+
+    // Remove the minterms that are covered by the Essential Prime Implicants
+    for (int i = 0; i < Minterms.size(); i++) {
+        if (find(EPIMinterms.begin(), EPIMinterms.end(), Minterms[i]) == EPIMinterms.end()) {
+            nonEPIMinterms.push_back(to_string(Minterms[i])); // Convert the minterm back to a string
+        }
+    }
+
+    return nonEPIMinterms;
 }
 
 

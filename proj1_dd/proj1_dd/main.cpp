@@ -8,6 +8,7 @@ using namespace std;
 int main()
 {
 
+
     //---------------------------Intro----------------------------------------
     cout << "🅀 🅄 🄸 🄽 🄴  🄼 🄲 🄲 🄻 🅄 🅂 🄺 🄴 🅈\n";
     cout << "Welcome to the Logic Minimization Tool!\n";
@@ -51,7 +52,7 @@ int main()
         vector<string> minterms = printTruthTable(bool_exp);
         cout << "\n\n";
         vector<string> Minterms = PrintBinaryMinterms(minterms); // binary
-        //        vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
+        vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
 
         //---------------------------------------Printing the PI------------------------------------------------------
         //        vector<string> primeImplicants = generatePrimeImplicants(Minterms);
@@ -64,6 +65,7 @@ int main()
         }
 
         //-----------------------------------------Printing the EPI-------------------------------------------------
+        vector<string> EPIterms;
         vector<string> EPI = generateEssentialPrimeImplicants(PI);
         // print EPI
         cout << "\n\nEssential Prime Implicants: ";
@@ -71,6 +73,21 @@ int main()
         {
             cout << EPI[i] << " ";
         }
+        //---------------------------------------Printing non-EPI--------------------------------------------------
+         vector<string> nonEPIMinterms = generateMintermsNOTCoveredByEPI(PI, decimalMinterms, EPI);
+        cout<<"\n\nMinterms not covered by EPI: ";
+        if(nonEPIMinterms.size()==0)
+        {
+            cout<<"None";
+        }
+        else
+        {
+            for (int i = 0; i < nonEPIMinterms.size(); i++)
+            {
+                cout << nonEPIMinterms[i] << " ";
+            }
+        }
+
 
         //--------------------------------------Printing the K-MAP----------------------------------------------------
         cout << "\n\n\t\t\tK-MAP\t\t\n\n";
