@@ -49,12 +49,15 @@ int main()
 //---------------------------------------Printing the TRUTH TABLE---------------------------------------------
         vector<string> minterms = printTruthTable(bool_exp);
         vector<string> Minterms = PrintBinaryMinterms(minterms);//binary
-        vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
+//        vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
         
 //---------------------------------------Printing the PI------------------------------------------------------
-        vector<string> primeImplicants = generatePrimeImplicants(Minterms);
-        printPrimeImplicant_1(primeImplicants, Minterms);
-
+//        vector<string> primeImplicants = generatePrimeImplicants(Minterms);
+//        printPrimeImplicant_1(primeImplicants, Minterms);
+       map<string, string> PI =  generatePrimeImplicants(Minterms);
+        for (const auto& pair : PI) {
+              cout << "Prime Implicant: " << pair.first << ", Minterms Covered: " << pair.second << endl;
+          }
 
 //--------------------------------------Printing the K-MAP----------------------------------------------------
          cout<< "\n\t\t\tK-MAP\t\t\n\n" ;
