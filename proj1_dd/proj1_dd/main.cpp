@@ -49,6 +49,7 @@ int main()
 //---------------------------------------Printing the TRUTH TABLE---------------------------------------------
         vector<string> minterms = printTruthTable(bool_exp);
         vector<string> Minterms = PrintBinaryMinterms(minterms);//binary
+        vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
         
 //---------------------------------------Printing the PI------------------------------------------------------
         vector<string> primeImplicants = generatePrimeImplicants(Minterms);

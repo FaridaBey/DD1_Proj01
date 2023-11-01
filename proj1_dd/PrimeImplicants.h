@@ -12,6 +12,20 @@ using namespace std;
 
 //----------------------Prime Implicant extraction and utilities----------------------
     
+struct combination
+{
+    string combinedMinterm;
+    bool isCombined;
+    vector<string> coveredMins;
+
+    combination(string combinedMinterm, bool isCombined, vector<string> coveredMins)
+    {
+        this->combinedMinterm = combinedMinterm;
+        this->isCombined = isCombined;
+        this->coveredMins = coveredMins;
+    }
+};
+
 //---------------To be used for QM------------------
 int countOnes(const string &binaryString) {
     return count(binaryString.begin(), binaryString.end(), '1');
@@ -165,11 +179,24 @@ void printPrimeImplicant_1(const vector<string>& primeImplicant, const vector<st
         cout << pi << " \n";
     }
     cout << endl;
-    cout << "Covers Minterms: ";
+    cout << "Covered Minterms: ";
     for (const string& minterm : minterms) {
         cout << minterm << " ";
     }
     cout << endl;
+}
+
+vector<int> PrintDecimalMinterms( vector<string> Minterms)
+{
+    vector<int> decimalMinterms;
+    for (int i = 0; i < Minterms.size(); i++) {
+        decimalMinterms.push_back(stoi(Minterms[i], nullptr, 2));
+    }
+    //print minterms
+ for (int i = 0; i < decimalMinterms.size(); i++) {
+        cout << "decimal minterm: " <<decimalMinterms[i] << " \n ";
+    }
+    return decimalMinterms;
 }
 
 #endif /* PrimeImplicants_h */
