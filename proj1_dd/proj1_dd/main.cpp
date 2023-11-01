@@ -44,36 +44,46 @@ int main()
     if (validation(expression))
     {
         string bool_exp = transform(expression);
-       // cout << " \t" << bool_exp << "\n"; // for testing the transform function
-        
-//---------------------------------------Printing the TRUTH TABLE---------------------------------------------
-        vector<string> minterms = printTruthTable(bool_exp);
-        vector<string> Minterms = PrintBinaryMinterms(minterms);//binary
-//        vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
-        
-//---------------------------------------Printing the PI------------------------------------------------------
-//        vector<string> primeImplicants = generatePrimeImplicants(Minterms);
-//        printPrimeImplicant_1(primeImplicants, Minterms);
-       map<string, string> PI =  generatePrimeImplicants(Minterms);
-        for (const auto& pair : PI) {
-              cout << "Prime Implicant: " << pair.first << ", Minterms Covered: " << pair.second << endl;
-          }
+        // cout << " \t" << bool_exp << "\n"; // for testing the transform function
 
-//--------------------------------------Printing the K-MAP----------------------------------------------------
-         cout<< "\n\t\t\tK-MAP\t\t\n\n" ;
-         vector<char> variables = extractVar(bool_exp);
-         vector<string> Kminterms = PrintBinaryMinterms(minterms); // removed the "Minterms in sorted binary form:" from printbinary func
-         print_KMap(Kminterms, variables);
-         cout << "\n";
+        //---------------------------------------Printing the TRUTH TABLE---------------------------------------------
+        cout << "\n\n";
+        vector<string> minterms = printTruthTable(bool_exp);
+        cout << "\n\n";
+        vector<string> Minterms = PrintBinaryMinterms(minterms); // binary
+        //        vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
+
+        //---------------------------------------Printing the PI------------------------------------------------------
+        //        vector<string> primeImplicants = generatePrimeImplicants(Minterms);
+        //        printPrimeImplicant_1(primeImplicants, Minterms);
+
+        map<string, string> PI = generatePrimeImplicants(Minterms);
+        for (const auto &pair : PI)
+        {
+            cout << "Prime Implicant: " << pair.first << ", Minterms Covered: " << pair.second << endl;
+        }
+
+        //-----------------------------------------Printing the EPI-------------------------------------------------
+        vector<string> EPI = generateEssentialPrimeImplicants(PI);
+        // print EPI
+        cout << "\n\nEssential Prime Implicants: ";
+        for (int i = 0; i < EPI.size(); i++)
+        {
+            cout << EPI[i] << " ";
+        }
+
+        //--------------------------------------Printing the K-MAP----------------------------------------------------
+        cout << "\n\n\t\t\tK-MAP\t\t\n\n";
+        vector<char> variables = extractVar(bool_exp);
+        vector<string> Kminterms = PrintBinaryMinterms(minterms); // removed the "Minterms in sorted binary form:" from printbinary func
+        print_KMap(Kminterms, variables);
+        cout << "\n";
     }
-    
+
     else
     {
         cout << "cant process the truth table ... Expression INVALID" << endl;
     }
-    
+
     return 0;
 }
-
-
- 

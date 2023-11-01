@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 #include <cctype>
+#include <map>
+#include <stack>
 #include <algorithm>
 
 using namespace std;
@@ -296,6 +298,53 @@ void printMintermsCoveredByPrimeImplicant(const map<string, string>& mintermsCov
         cout << "Implicant: " << entry.first << " Covers Minterms (Decimal): " << entry.second << endl;
     }
 }
+
+
+vector<string> generateEssentialPrimeImplicants(map<string, string> PI) {
+    vector<string> EPI;
+    map<string, int> mintermCount;
+
+    // Count how many times each minterm is covered by prime implicants
+    for (const auto& pair : PI) {
+        string minterms = pair.second;
+        string delimiter = ", ";
+        size_t pos = 0;
+        string token;
+        while ((pos = minterms.find(delimiter)) != string::npos) {
+            token = minterms.substr(0, pos);
+            mintermCount[token]++;
+            minterms.erase(0, pos + delimiter.length());
+        }
+        mintermCount[minterms]++;
+    }
+
+    // Check if a minterm is covered by only one prime implicant
+    for (const auto& pair : PI) {
+        string minterms = pair.second;
+        string delimiter = ", ";
+        size_t pos = 0;
+        string token;
+        while ((pos = minterms.find(delimiter)) != string::npos) {
+            token = minterms.substr(0, pos);
+            if (mintermCount[token] == 1) {
+                EPI.push_back(pair.first);
+                break;  // Once an essential prime implicant is found, move to the next prime implicant
+            }
+            minterms.erase(0, pos + delimiter.length());
+        }
+        if (mintermCount[minterms] == 1) {
+            EPI.push_back(pair.first);
+        }
+    }
+
+    // Remove duplicates
+    sort(EPI.begin(), EPI.end());
+    EPI.erase(unique(EPI.begin(), EPI.end()), EPI.end());
+
+    return EPI;
+}
+
+
 #endif /* PrimeImplicants_h */
 #pragma clang diagnostic pop
 
