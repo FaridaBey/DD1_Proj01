@@ -68,9 +68,8 @@ string convertToBinary(const string& minterm) {
     for (char c : minterm) {
         if (c == '0' || c == '1') {
             binaryMinterm += c;
-        } else if (c == '\'') {
-            binaryMinterm += 'X'; // Use 'X' for don't care
-        } else {
+        } 
+         else {
             // Handle variables (e.g., a, b, c)
             // You need to map your variables to positions in the binary representation
             // For example, if a, b, c correspond to 0, 1, 2, you can use:
