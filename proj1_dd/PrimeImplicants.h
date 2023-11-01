@@ -12,6 +12,20 @@ using namespace std;
 
 //----------------------Prime Implicant extraction and utilities----------------------
     
+struct combination
+{
+    string combinedMinterm;
+    bool isCombined;
+    vector<string> coveredMins;
+
+    combination(string combinedMinterm, bool isCombined, vector<string> coveredMins)
+    {
+        this->combinedMinterm = combinedMinterm;
+        this->isCombined = isCombined;
+        this->coveredMins = coveredMins;
+    }
+};
+
 //---------------To be used for QM------------------
 int countOnes(const string &binaryString) {
     return count(binaryString.begin(), binaryString.end(), '1');
@@ -33,7 +47,6 @@ vector<string> PrintBinaryMinterms(vector<string> minterms)
     //---------------------------------------Print Minterms in Binary form----------------------------------
 
 sortbyones(minterms);
-//cout<< "\n\nMinterms in sorted binary form: \n";
 vector<string> binary;
 string temp = "";
 //binary representation
@@ -69,9 +82,8 @@ string convertToBinary(const string& minterm) {
     for (char c : minterm) {
         if (c == '0' || c == '1') {
             binaryMinterm += c;
-        } else if (c == '\'') {
-            binaryMinterm += 'X'; // Use 'X' for don't care
-        } else {
+        } 
+         else {
             // Handle variables (e.g., a, b, c)
             // You need to map your variables to positions in the binary representation
             // For example, if a, b, c correspond to 0, 1, 2, you can use:
@@ -167,11 +179,24 @@ void printPrimeImplicant_1(const vector<string>& primeImplicant, const vector<st
         cout << pi << " \n";
     }
     cout << endl;
-    cout << "Covers Minterms: ";
+    cout << "Covered Minterms: ";
     for (const string& minterm : minterms) {
         cout << minterm << " ";
     }
     cout << endl;
+}
+
+vector<int> PrintDecimalMinterms( vector<string> Minterms)
+{
+    vector<int> decimalMinterms;
+    for (int i = 0; i < Minterms.size(); i++) {
+        decimalMinterms.push_back(stoi(Minterms[i], nullptr, 2));
+    }
+    //print minterms
+ for (int i = 0; i < decimalMinterms.size(); i++) {
+        cout << "decimal minterm: " <<decimalMinterms[i] << " \n ";
+    }
+    return decimalMinterms;
 }
 
 #endif /* PrimeImplicants_h */

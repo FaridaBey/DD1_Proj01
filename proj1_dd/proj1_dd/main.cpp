@@ -44,11 +44,12 @@ int main()
     if (validation(expression))
     {
         string bool_exp = transform(expression);
-        cout << " \t" << bool_exp << "\n"; // for testing the transform function
+       // cout << " \t" << bool_exp << "\n"; // for testing the transform function
         
 //---------------------------------------Printing the TRUTH TABLE---------------------------------------------
         vector<string> minterms = printTruthTable(bool_exp);
         vector<string> Minterms = PrintBinaryMinterms(minterms);//binary
+        vector<int> decimalMinterms = PrintDecimalMinterms(Minterms);//decimal
         
 //---------------------------------------Printing the PI------------------------------------------------------
         vector<string> primeImplicants = generatePrimeImplicants(Minterms);

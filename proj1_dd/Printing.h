@@ -13,6 +13,8 @@
 #include <cmath>
 #include <iomanip>
 #include <ios>
+#include <bitset>
+#include <unordered_map>
 using namespace std;
 
 
@@ -211,6 +213,8 @@ vector<string> printTruthTable(const string &expression) {
         }
     }
     
+    //sort(variables.begin(), variables.end()); to sort the truth table header only
+
     int numRows = pow(2, numVariables);
     
     // Print the header row with variable names
