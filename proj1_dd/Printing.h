@@ -417,6 +417,12 @@ void print_KMap(const vector<string>& minterms, const vector<char>& variables) {
         }
     }
 }
+
+string removeSpaces(string str)
+{
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+    return str;
+}
 //----------------------------------------------------------------------------------------------------
 
 #endif /* Printing_h */
