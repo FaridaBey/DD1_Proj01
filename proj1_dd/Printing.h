@@ -15,47 +15,8 @@
 #include <ios>
 #include <bitset>
 #include <unordered_map>
+#include <stdlib.h>
 using namespace std;
-
-
-
-//----------------------------TESTING-------------------------------------
-
-// Function to extract prime implicants from canonical SoP expression
-vector<string> extractPrimeImplicants(const string &sopExpression) {
-    vector<string> terms; // Split the SoP expression into terms
-    string term = "";
-    for (char c : sopExpression) {
-        if (c == '+') {
-            terms.push_back(term);
-            term = "";
-        } else {
-            term += c;
-        }
-    }
-    terms.push_back(term); // Add the last term
-
-  //  vector<string> primeImplicants;
-
-    //print the prime implicants
-    cout << "\n\n\n terms: ";
-    for (size_t i = 0; i < terms.size(); i++) {
-        cout << terms[i];
-        if (i < terms.size() - 1) {
-            cout << " ";
-        }
-    }
-
-   // return primeImplicants;
-   return terms;
-}
-//---------------------------TESTING----------------------------------------
-
-
-
-
-
-
 
 //--------------- Helper functions for Print ------------------
 
@@ -191,12 +152,7 @@ bool convert_exp(const string& expression) {
 }
 
 
-//------------------------------TRUTH TABLE & Canonical SoP/PoS-------------------------------------
-
-/*
-    the output needs more organization --> variables output in alphabetical order
- */
-//count var
+//------------------------------TRUTH TABLE & Canonical SoP/PoS-----------------------------
 
 // funtcion to print the truth table and canonical PoS/SoP, returns the canonical SoP
 vector<string> printTruthTable(const string &expression) {
@@ -325,11 +281,10 @@ vector<char> extractVar(const string& boolean_exp) {
     return variableNames;
 }
 
-
 void print_KMap(vector<int> minterms, vector<char> variables) {
-
+    int kmap[4][4] = {0};
     int numOfvariable = variables.size();
-    string headers2[] = {" 0", " 1"};
+    string headers2[] = {"00", "01"};
     string headers4[] = {"00", "01", "11", "10"};
     if (variables.size() > 4) {
         cout << "TOO Many Variables for the K-Map\nMAX 4 Variables\n";
@@ -338,11 +293,7 @@ void print_KMap(vector<int> minterms, vector<char> variables) {
     }
     else {
         int row = -1, col = -1;
-        if (numOfvariable == 1) {
-            row = 2;
-            col = 2;
-        }
-        else if (numOfvariable == 2) {
+        if (numOfvariable == 2) {
             row = 2;
             col = 2;
         } else if (numOfvariable == 3) {
@@ -352,7 +303,7 @@ void print_KMap(vector<int> minterms, vector<char> variables) {
             row = 4;
             col = 4;
         }
-        int kmap[4][4] = {0};
+        
         int gray_code[4] = {0, 1, 3, 2};
         for (int m : minterms) {
             int k = gray_code[m / col];
@@ -402,7 +353,6 @@ void print_KMap(vector<int> minterms, vector<char> variables) {
         }
     }
 }
-
 //------------------------------------------------------------------------------------------------
 
 string removeSpaces(string str)
@@ -410,7 +360,7 @@ string removeSpaces(string str)
     str.erase(remove(str.begin(), str.end(), ' '), str.end());
     return str;
 }
-//----------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 
 
 

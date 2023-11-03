@@ -90,8 +90,21 @@ int main()
         cout << "\n\nMinimized Boolean Expression: " << final_answer(minimizedExpression, variables) << endl;
 
 //--------------------------------- Printing the K-MAP --------------------------------------------
+        
+       
         cout << "\n\n\t\t\tK-MAP\t\t\n";
         print_KMap(decimalMinterms,variables);
+        cout << "\n";
+        cout << "===============Covers==============\n\n";
+        // Loop through each prime implicant and print a K-map
+        int i= 0;
+        for (const auto &pi : PI) {
+            vector<string> minterms = splitMinterms(PI[pi.first]);
+            vector<int> mintermIntegers = convertStringVectorToInt(minterms);
+            cout << "-----------Cover " << i+1<< "-------------\n";
+            print_KMap(mintermIntegers, variables);
+            i++;
+        }
         cout << "\n";
 
 //------------------------------ Drawing Logic Circuit --------------------------------------------

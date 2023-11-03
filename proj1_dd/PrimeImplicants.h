@@ -181,6 +181,7 @@ void printMintermsCoveredByPrimeImplicant(const map<string, string>& mintermsCov
                 cout << "Prime Implicant: " << pair.first << ", Minterms Covered: " << pair.second << endl;
             }
 }
+
 //----------------------------Part 4--------------------------------------
 vector<string> generateEssentialPrimeImplicants(map<string, string> PI) {
     vector<string> EPI;
@@ -357,7 +358,34 @@ string final_answer(string boolexp, const vector<char>& variables) {
     
     return finalexp;
 }
+//-------------FOR K-MAP COVERS-------------
+vector<string> get_mints(const map<string, string>& mintermsCoveredByPrimeImplicant){
+    vector<string> allmints;
+    for (const auto &pair : mintermsCoveredByPrimeImplicant)
+    {
+        allmints.push_back(pair.second);
+    }
+    return allmints;
+}
+int countpi(const map<string, string>& mintermsCoveredByPrimeImplicant){
+    int count = 0;
+    for (const auto &pair : mintermsCoveredByPrimeImplicant)
+    {
+        count++;
+    }
+    return count;
+}
+vector<int> convertStringVectorToInt(const vector<string>& stringVector) {
+    vector<int> intVector;
+    
+    for (const string& str : stringVector) {
+  
+            int intValue = stoi(str);
+            intVector.push_back(intValue);
+    }
 
+    return intVector;
+}
 
 #endif /* PrimeImplicants_h */
 #pragma clang diagnostic pop
