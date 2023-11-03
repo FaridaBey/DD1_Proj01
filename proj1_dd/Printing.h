@@ -405,6 +405,15 @@ void print_KMap(vector<int> minterms, vector<char> variables) {
 
 //------------------------------------------------------------------------------------------------
 
+string removeSpaces(string str)
+{
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+    return str;
+}
+//----------------------------------------------------------------------------------------------------
+
+
+
 #endif /* Printing_h */
 
 #pragma clang diagnostic pop
