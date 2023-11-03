@@ -357,10 +357,16 @@ string final_answer(string boolexp, const vector<char>& variables) {
         }
 
     }
+<<<<<<< HEAD
     if(finalexp == "")
     {
         finalexp = "1";
     }
+=======
+    if (finalexp == "")
+        finalexp = "1";
+    
+>>>>>>> refs/remotes/origin/main
     return finalexp;
 }
 //-------------FOR K-MAP COVERS-------------
