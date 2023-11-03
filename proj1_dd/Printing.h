@@ -325,98 +325,85 @@ vector<char> extractVar(const string& boolean_exp) {
     return variableNames;
 }
 
-// Function to convert a decimal number to Gray code; to output the headers in correct order
-int decimalToGray(int num) {
-    return num ^ (num >> 1);
-}
 
+void print_KMap(vector<int> minterms, vector<char> variables) {
 
-void print_KMap(const vector<string>& minterms, const vector<char>& variables) {
-    if(variables.size()>4){
-        cout << "TOO Many Variables for the K-Map" << endl;
+    int numOfvariable = variables.size();
+    string headers2[] = {" 0", " 1"};
+    string headers4[] = {"00", "01", "11", "10"};
+    if (variables.size() > 4) {
+        cout << "TOO Many Variables for the K-Map\nMAX 4 Variables\n";
+    } else if(variables.size() < 2){
+        cout << "1 Variable .. Cant print K-Map " << endl;
     }
-    else{
-        // Calculate the number of rows and columns in the K-Map
-        int numRows = pow(2, variables.size() / 2);
-        int numCols = pow(2, (variables.size() + 1) / 2);
-        
-        // Create a 2D vector to represent the K-Map
-        vector<vector<char>> kMap(numRows, vector<char>(numCols, '0'));
-        
-        // Fill in the K-Map with '1's based on the minterms
-        for (int i = 0; i < minterms.size(); i++) {
-            // Convert minterm to binary representation (assuming it's a binary number)
-            string binaryMinterm = minterms[i];
-            
-            
-            // ---------------IF THERE IS AN ERROR-----------------
-            
-            // Validate the binary minterm format
-            if (binaryMinterm.size() != variables.size()) {
-                cerr << "Invalid minterm format: " << binaryMinterm << endl;
-                continue; // Skip this minterm
-            }
-            
-            for (char c : binaryMinterm) {
-                if (c != '0' && c != '1') {
-                    cerr << "Invalid character in minterm: " << binaryMinterm << endl;
-                    continue; // Skip this minterm
-                }
-            }
-            // ----------------------END-------------------
-            
-            // Convert binary representation to row and column indices
-            int binaryValue = stoi(binaryMinterm, nullptr, 2);
-            int row = binaryValue / numCols;
-            int col = binaryValue % numCols;
-            
-            // Bounds checking
-            if (row >= 0 && row < numRows && col >= 0 && col < numCols) {
-                // Mark the cell in the K-Map as '1'
-                kMap[row][col] = '1';
-            } else {
-                cerr << "Minterm out of bounds: " << binaryMinterm << endl; // if there is an error
-            }
+    else {
+        int row = -1, col = -1;
+        if (numOfvariable == 1) {
+            row = 2;
+            col = 2;
         }
-        
-        // Determine the maximum number of bits required for column representation
-        int maxbits = ceil(log2(numCols));
-        
-        // Print the Karnaugh Map with Gray code representations of row and column indices
-        cout << " ";
-        for (int i = 0; i < variables.size() / 2; i++) {
-            cout << variables[i]; // for header identification
+        else if (numOfvariable == 2) {
+            row = 2;
+            col = 2;
+        } else if (numOfvariable == 3) {
+            row = 2;
+            col = 4;
+        } else {
+            row = 4;
+            col = 4;
         }
-        cout << " |";
-        for (int j = 0; j < numCols; j++) {
-            cout << " " << setw(maxbits) << bitset<2>(decimalToGray(j)) << "  |";
+        int kmap[4][4] = {0};
+        int gray_code[4] = {0, 1, 3, 2};
+        for (int m : minterms) {
+            int k = gray_code[m / col];
+            int j = gray_code[m % col];
+            kmap[k][j] = 1;
         }
+       
+        if (row == 2)
+            cout << variables[0];
+        else
+            cout << variables[0] << variables[1];
+     cout << "  /";
+        if (row == 2 && numOfvariable == 2)
+            cout << variables[1];
+        else if (row == 2 && numOfvariable == 3)
+            cout << variables[1] << variables[2];
+        else
+            cout << variables[2] << variables[3];
         cout << endl;
+        cout << "     ";
         
-        for (int i = variables.size() / 2; i < variables.size(); i++) {
-            cout << variables[i]; // for header identification
-        }
-        cout << " ";
-        cout << "|";
-        for (int j = 0; j < numCols; j++) {
-            cout << "-----|";
-        }
-        cout << endl;
-        
-        for (int i = 0; i < numRows; i++) {
-            cout << setw(variables.size() / 2) << bitset<2>(decimalToGray(i)) << " |";
-            for (int j = 0; j < numCols; j++) {
-                cout << "  " << kMap[i][j] << "  |";
+        for (int i = 0; i < row; i++) {
+            if (row == 2) {
+                cout << headers2[i] << " |";
+                
+            } else if (row == 4) {
+                cout << headers4[i] << " |";
             }
-            cout << endl;
-            cout << "---|";
-            for (int j = 0; j < numCols; j++) {
-                cout << "-----|";
+        }
+
+        cout << endl;
+
+        
+        for (int j = 0; j < col; j++) {
+            
+             if (col == 2) {
+                cout << headers2[j] << "  |";
+            } else if (col == 4) {
+                cout << headers4[j] << "  |";
+            }
+
+    
+            for (int i = 0; i < row; i++) {
+                cout << setw(2) << kmap[i][j] << " |";
             }
             cout << endl;
         }
     }
 }
+
+//------------------------------------------------------------------------------------------------
 
 string removeSpaces(string str)
 {
@@ -424,6 +411,8 @@ string removeSpaces(string str)
     return str;
 }
 //----------------------------------------------------------------------------------------------------
+
+
 
 #endif /* Printing_h */
 

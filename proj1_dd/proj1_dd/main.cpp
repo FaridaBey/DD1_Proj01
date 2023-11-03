@@ -54,9 +54,8 @@ int main()
         vector<string> Minterms = PrintBinaryMinterms(minterms);      // binary
         vector<int> decimalMinterms = PrintDecimalMinterms(Minterms); // decimal
 
-        //--------------------------------------- Printing the PI ------------------------------------------------------
-        //        vector<string> primeImplicants = generatePrimeImplicants(Minterms);
-        //        printPrimeImplicant_1(primeImplicants, Minterms);
+
+//--------------------------------------- Printing the PI ------------------------------------------------------
 
         map<string, string> PI = generatePrimeImplicants(Minterms);
         printMintermsCoveredByPrimeImplicant(PI);
@@ -93,6 +92,13 @@ int main()
         //-------------------------------------- Printing the K-MAP ----------------------------------------------------
         cout << "\n\n\t\t\tK-MAP\t\t\n\n";
 
+        print_KMap(decimalMinterms,variables);
+        cout << "\n";
+
+        
+
+        //-------------------------------------- Printing the Logic circuit ----------------------------------------------------
+
         vector<string> Kminterms = PrintBinaryMinterms(minterms); // removed the "Minterms in sorted binary form:" from printbinary func
         print_KMap(Kminterms, variables);
         cout << "\n";
@@ -101,6 +107,7 @@ int main()
        string minexp = final_answer(minimizedExpression, variables);
        minexp = removeSpaces(minexp);
         printDrawing(minexp);
+
     }
 
     else
