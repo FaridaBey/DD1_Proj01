@@ -357,6 +357,8 @@ string final_answer(string boolexp, const vector<char>& variables) {
         }
 
     }
+    if (finalexp == "")
+        finalexp = "1";
     
     return finalexp;
 }
