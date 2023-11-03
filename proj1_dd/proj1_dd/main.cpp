@@ -45,6 +45,7 @@ int main()
     if (validation(expression))
     {
         string bool_exp = transform(expression);
+        vector<char> variables = extractVar(bool_exp);
         // cout << " \t" << bool_exp << "\n"; // for testing the transform function
 
 //--------------------------------------- Printing the TRUTH TABLE --------------------------------
@@ -67,7 +68,7 @@ int main()
         cout << "\n\nEssential Prime Implicants: \n";
         for (int i = 0; i < EPI.size(); i++)
         {
-            cout << i + 1 << ": " << EPI[i] << "\n";
+            cout << i + 1 <<": "<< final_answer(EPI[i],variables) << " (" << EPI[i] << ") " <<"\n";
         }
 //--------------------------------------- Printing non-EPI --------------------------------------
         vector<string> nonEPIMinterms = generateMintermsNOTCoveredByEPI(PI, decimalMinterms, EPI);
@@ -85,7 +86,6 @@ int main()
         }
 //-------------------------------- Printing Minimized Boolean Expression --------------------------
         string minimizedExpression = generateMinimizedExpression(EPI, nonEPIMinterms, PI);
-        vector<char> variables = extractVar(bool_exp);
         sort(variables.begin(), variables.end());
         cout << "\n\nMinimized Boolean Expression: " << final_answer(minimizedExpression, variables) << endl;
 
