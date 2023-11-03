@@ -176,9 +176,11 @@ vector<int> PrintDecimalMinterms( vector<string> Minterms)
     return decimalMinterms;
 }
 void printMintermsCoveredByPrimeImplicant(const map<string, string>& mintermsCoveredByPrimeImplicant) {
+    int i=1;
             for (const auto &pair : mintermsCoveredByPrimeImplicant)
             {
-                cout << "Prime Implicant: " << pair.first << ", Minterms Covered: " << pair.second << endl;
+                cout << "Prime Implicant [" << i <<"] : "<< pair.first << " , Minterms Covered: " << pair.second << endl;
+                i++;
             }
 }
 
