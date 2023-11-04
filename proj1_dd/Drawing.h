@@ -138,38 +138,6 @@ string termsToWaveDromJSON(vector<string> terms)
     return wavedromJSON;
 }
 
-// void printDrawing(string minexp)
-// {
-//     vector<string> products = parseMinExp(minexp);
-//     string wavedromJSON = termsToWaveDromJSON(products);
-    
-//     string scripts = R"s(<script
-//  src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.1.0/skins/default.js" type="text/javascript"></script>
-// <script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.1.0/wavedrom.min.js" type="text/javascript"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.1.0/skins/default.js" type="text/javascript"></script>
-// <script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.1.0/wavedrom.min.js" type="text/javascript"></script>
-
-// <body onload="WaveDrom.ProcessAll()">
-// <script type="WaveDrom">
-// )s" + wavedromJSON + R"s(
-
-// </script>
-// )s";
-
-
-
-//     string htmlContent = "<html>" + scripts + "</body></html>";
-//     string htmlFilePath = "output.html";
-
-//     // Write the HTML content to a file
-//     ofstream htmlFile(htmlFilePath);
-//     htmlFile << htmlContent;
-//     htmlFile.close();
-
-//     // Open the HTML file in the default web browser
-//     string command = "open " + htmlFilePath; // Use "start" on Windows, "xdg-open" on Linux
-//     system(command.c_str());
-// }
-
 void printDrawing(string minexp)
 {
     vector<string> products = parseMinExp(minexp);
