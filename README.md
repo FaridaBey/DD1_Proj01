@@ -1,5 +1,8 @@
 # DD1_Proj01
  A logic minimization project: program to better understang Quine-McCluskey Logic Minimization algorithm.
+ 
+ Test Cases:
+ 
  CASE1:(a+b+c+a'+b)(a+c)(a+b+d')(a+b'+c')
  CASE2:((((((a+b+c'))))))
  CASE3:a+bc''''''''''+d'a
