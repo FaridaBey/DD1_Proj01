@@ -146,6 +146,10 @@ int main()
         //-------------------------------- Printing Minimized Boolean Expression --------------------------
         string minimizedExpression = generateMinimizedExpression(EPI, nonEPIMinterms, PI);
         sort(variables.begin(), variables.end());
+
+        if(PI.empty())
+         cout << "\n\nMinimized Boolean Expression: 0\n" ;
+         else
         cout << "\n\nMinimized Boolean Expression: " << final_answer(minimizedExpression, variables) << endl;
 
         //--------------------------------- Printing the K-MAP --------------------------------------------
@@ -169,7 +173,10 @@ int main()
         //------------------------------ Drawing Logic Circuit --------------------------------------------
         string minexp = final_answer(minimizedExpression, variables);
         minexp = removeSpaces(minexp);
+        if(!PI.empty())
         printDrawing(minexp);
+        else
+        printDrawing("0");
     }
 
     else
