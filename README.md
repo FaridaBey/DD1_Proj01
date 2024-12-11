@@ -70,7 +70,7 @@ The program is designed as a learning and research tool for digital design stude
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/FaridaBey/DD1_Proj01.git
+   git clone https://github.com/FaridaBey/Quine-McCluskey_BooleanSimplifier.git
    cd <repository_folder>
    ```
 
